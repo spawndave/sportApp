@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Duration;
 import java.time.LocalDate;
 
 @Getter
@@ -20,9 +19,6 @@ public class TrainingSession extends ModifierOptions{
     @JoinColumn(name = "training_id", nullable = false)
     private Training training;
 
-    @ManyToOne
-    @JoinColumn(name = "athlete_id", nullable = false)
-    private Athlete athlete;
 
     @Column(nullable = false)
     private Integer duration;

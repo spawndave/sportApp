@@ -1,10 +1,9 @@
 package com.academy.sportApp.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Where;
 
 import java.util.List;
 
@@ -12,25 +11,17 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
+@Table(name="athlete_sport")
+public class Athlete{
+    @Id
+    private Long id;
 
-//@Table(name = "user")
-//@Where(clause = "role_id = 3")
-@DiscriminatorValue(value = "3")
-public class Athlete extends User{
-   /* @Id
-    private Long id;*/
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "athlete_sport",
-            joinColumns = @JoinColumn(name = "athlete_id"),
-            inverseJoinColumns = @JoinColumn(name = "sport_id")
-    )
-    private List<Sport> sports;
+    @OneToOne
+    @JoinColumn(name = "athlete_id")
+    private User user;
 
+    @OneToMany(mappedBy = "athlete")
+    @JsonManagedReference
+    private List<TrainingParticipant> trainings;
 
-    /*@ManyToMany(fetch = FetchType.LAZY, mappedBy = "athletes")
-    private List<Coach> coaches;*/
-
-    @OneToMany(mappedBy = "athlete", cascade = CascadeType.ALL)
-    private List<TrainingSession> trainingSessions ;
 }

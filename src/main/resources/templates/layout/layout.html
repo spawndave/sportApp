@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        lang="en"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE"></title>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+
+</head>
+
+<body>
+    <!--<div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]" aria-hidden="true">
+        <div class="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+    </div>-->
+   <!-- <nav class="h-12 pl-4 bg-gray-100 shadow flex items-center justify-start">
+        <a href="#" class="border-b-2 border-indigo-500 h-full inline-flex items-center">Menu Item 1</a>
+        <a href="#" class="ml-6">Menu Item 2</a>
+    </nav>
+    <section layout:fragment="page-content" class="text-base text-gray-700 ml-4 mt-4"></section>
+-->
+
+   <div x-data="sidebarMenu()"
+        @keydown.window.escape="closeSidebar"
+        class="flex h-screen bg-gray-50 "
+   >
+       <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
+       <div th:replace="~{fragments/sidebar-menu :: mobile}"></div>
+
+       <!-- Static sidebar for desktop -->
+       <div th:replace="~{fragments/sidebar-menu :: desktop}"></div>
+
+       <div class="flex flex-1 flex-col ">
+           <div th:replace="~{fragments/top-menu :: menu}"></div>
+
+           <main class="h-full pb-16 overflow-y-auto">
+
+               <div class="container px-6 mx-auto grid">
+                   <div layout:fragment="page-content">
+                   </div>
+               </div>
+           </main>
+       </div>
+   </div>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script th:src="@{/js/user-menu.js}"></script>
+
+    <th:block layout:fragment="page-scripts">
+    </th:block>
+
+</body>
+</html>

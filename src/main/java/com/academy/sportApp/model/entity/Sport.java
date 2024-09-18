@@ -14,11 +14,19 @@ public class Sport extends ModifierOptions{
     private Long id;
     private String name;
     private String description;
-   /* @OneToMany
+    @OneToMany
     @JoinTable(
-            name = "coach",
+            name = "coach_sport",
             joinColumns = @JoinColumn(name = "sport_id"),
             inverseJoinColumns = @JoinColumn(name = "coach_id")
     )
-    private List<Coach> coaches;*/
+    List<Coach> coaches;
+    @OneToMany
+    @JoinTable(
+            name = "athlete_sport",
+            joinColumns = @JoinColumn(name = "sport_id"),
+            inverseJoinColumns = @JoinColumn(name = "athlete_id")
+    )
+    List<Athlete> athletes;
+
 }

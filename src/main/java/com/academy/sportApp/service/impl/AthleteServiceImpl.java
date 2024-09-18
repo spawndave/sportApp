@@ -1,12 +1,9 @@
 package com.academy.sportApp.service.impl;
 
 import com.academy.sportApp.model.entity.Athlete;
-import com.academy.sportApp.model.entity.Coach;
-import com.academy.sportApp.model.entity.User;
 import com.academy.sportApp.model.repository.AthleteRepository;
 import com.academy.sportApp.model.repository.UserRepository;
 import com.academy.sportApp.service.AthleteService;
-import com.academy.sportApp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
