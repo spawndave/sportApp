@@ -1,0 +1,16 @@
+{
+  "name": "SportApp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -i ./css/styles.css -o ../resources/static/css/main.css",
+    "watch": "tailwindcss --watch -i ./css/styles.css -o ../resources/static/css/main.css"
+  },
+  "author": "Ihar Vypau",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.8",
+    "tailwindcss": "^3.4.10"
+  }
+}
