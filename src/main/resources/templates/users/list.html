@@ -13,7 +13,7 @@
     <body>
     <div layout:fragment="page-content" class="py-4">
 
-        <div th:replace="~{fragments/titles :: title-with-button(#{users.title}, 'user-add', #{users.add}, @{/users/registration})}"></div>
+        <div th:replace="~{fragments/titles :: title-with-button(#{users.title}, 'user-add', #{users.add}, @{/users/athlete/registration})}"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
             <div class="py-4">
                 <div class="flex flex-col">
@@ -34,11 +34,12 @@
                                 <tbody class="bg-white divide-y gray:divide-gray-700 ">
 
                                     <tr class="text-gray-700 gray:text-gray-400 border-gray-300 " th:each="user : ${users}">
-                                        <td th:replace="~{fragments/table :: dataWithLink(${user.getFullName()},@{'/users/' + ${user.id}})}"></td>
+                                        <td th:replace="~{fragments/table :: dataWithLink(${user.getFullName()},
+                                        ${user.role.name == 'ATHLETE'}?@{/athlete/{username}(username=${user.username})}:@{coach/{id}(id=${user.username})})}"></td>
                                         <td th:replace="~{fragments/table :: data(contents=${user.role.name})}"></td>
                                         <td th:replace="~{fragments/table :: data(contents=${user.dateOfBirth})}"></td>
                                         <td th:replace="~{fragments/table :: data(contents=${user.email})}"></td>
-                                        <td th:replace="~{fragments/table :: dataWithLink('Edit', @{'/users/edit?id='+${user.id}})}"></td>
+                                        <td th:replace="~{fragments/table :: dataWithLink('Edit', @{'/users/edit/'+${user.id}})}"></td>
                                     </tr>
 
                                 </tbody>

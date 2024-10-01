@@ -1,41 +1,44 @@
 package com.academy.sportApp.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
 @Entity
-@Table(name = "coach_sport")
-public class Coach{
 
-    @Id
-    @Column(name="coach_id")
-    private Long coachId;
-
-    @OneToOne
-    @JoinColumn(name="coach_id")
-    private User user;
+@RequiredArgsConstructor
+//@Table(name = "coach_sport")
+//@PrimaryKeyJoinColumn(name = "coach_id")
+@DiscriminatorValue("2")
+public class Coach extends User{
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sport_id")
+    @JoinTable(
+            name = "coach_athlete_sport",
+            joinColumns = @JoinColumn(name = "coach_id"),
+            inverseJoinColumns = @JoinColumn(name = "sport_id")
+    )
     private Sport sport;
 
-    @OneToMany(mappedBy = "coach",  fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "coach",  fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Training> trainings;
 
-    @ManyToMany
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
     @JoinTable(
-            name = "coach_athlete",
+            name = "coach_athlete_sport",
             joinColumns = @JoinColumn(name = "coach_id"),
             inverseJoinColumns = @JoinColumn(name = "athlete_id")
     )
-    private List<Athlete> athletes;
+    private Set<AthleteWithCoach> athletes;
+
+
 
 
 }

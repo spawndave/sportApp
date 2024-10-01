@@ -6,6 +6,7 @@ import com.academy.sportApp.model.repository.AthleteRepository;
 import com.academy.sportApp.model.repository.CoachRepository;
 import com.academy.sportApp.model.repository.RoleRepository;
 import com.academy.sportApp.model.repository.UserRepository;
+import com.academy.sportApp.service.TaskService;
 import com.academy.sportApp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private final AthleteRepository athleteRepository;
     private final CoachRepository coachRepository;
     private final RoleRepository roleRepository;
+    private final TaskService service;
     /*
     private final RoleRepository roleRepository;
     private final PrivilegeRepository privilegeRepository;
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsers() {
         List<User> users = userRepository.findAll();
+        service.performTask();
         return users;
     }
 
@@ -35,6 +38,7 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long id) {
         return userRepository.getReferenceById(id);
     }
+
 
     @Override
     public void saveUser(User user) {

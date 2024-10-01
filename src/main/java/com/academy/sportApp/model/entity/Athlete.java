@@ -1,7 +1,8 @@
 package com.academy.sportApp.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,17 +12,21 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
-@Table(name="athlete_sport")
-public class Athlete{
-    @Id
-    private Long id;
+//@Table(name="athlete_sport")
+//@PrimaryKeyJoinColumn(name="athlete_id")
+@DiscriminatorValue("3")
+public class Athlete extends User{
 
-    @OneToOne
-    @JoinColumn(name = "athlete_id")
-    private User user;
+   /* @ManyToMany
+    @JoinTable(
+            name = "coach_athlete_sport",
+            joinColumns = @JoinColumn(name = "athlete_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "sport_id", referencedColumnName = "id")
+    )
+    private List<Sport> sports;*/
 
-    @OneToMany(mappedBy = "athlete")
-    @JsonManagedReference
-    private List<TrainingParticipant> trainings;
+    @OneToMany(mappedBy = "data")
+    private List<AthleteWithCoach> athleteActivities;
+
 
 }

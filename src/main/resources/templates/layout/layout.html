@@ -4,6 +4,7 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         lang="en"
+        x-data="data()"
 >
 <head>
     <meta charset="UTF-8">
@@ -50,11 +51,17 @@
            </main>
        </div>
    </div>
+
+    <div th:replace="~{fragments/modal/athletes-list :: modalAthletes}"></div>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script th:src="@{/js/user-menu.js}"></script>
+    <script th:src="@{/js/init-alpine.js}"></script>
+    <script th:src="@{/js/focus-trap.js}" defer></script>
 
     <th:block layout:fragment="page-scripts">
     </th:block>
+
+
 
 </body>
 </html>

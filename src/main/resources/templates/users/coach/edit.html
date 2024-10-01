@@ -3,56 +3,41 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{layout/layout}"
-        th:with="activeMenuItem='users'">
+        th:with="activeMenuItem='dashboard'">
 
 <head>
     <title>Users</title>
 </head>
 <body>
-<div layout:fragment="page-content">
+<div layout:fragment="page-content" class="container px-6 py-4">
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         <h1 class="text-2xl font-semibold text-gray-900"
-            th:text="#{user.signUp}">Sign up</h1>
+            th:text="#{user.coach.edit}">Edit
+        </h1>
     </div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+
         <div class="py-4">
+
             <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
                 <form id="user-form"
-                      th:object="${newUser}"
-                      th:action="@{/users/registration}"
+                      class="container mx-auto"
+                      th:object="${coach}"
+                      th:action="@{/coach/edit/{id}(id=${coach.id})}"
                       method="post">
-                    <div>
 
-                        <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                            <!-- tag::gender[] -->
-                            <div class="sm:col-span-6">
-                                <label class="block text-sm font-medium text-gray-700"
-                                       th:text="#{user.role}">
-                                    Role
-                                </label>
-                                <div>
-                                    <div class="form-group">
+                        <div class="mt-6 grid grid-cols-2 gap-y-6 gap-x-4 sm:grid-cols-4">
 
-                                        <input class="mr-1 focus:ring-green-500 h-4 w-4 text-green-500 border-gray-300 ml-4" type="radio" id="2" name="role" value="ATHLETE" required>
-                                        <label for="3">Athlete</label>
-                                        <input class="mr-1 focus:ring-green-500 h-4 w-4 text-green-500 border-gray-300 ml-4" type="radio" id="3" name="role" value="COACH" required>
-                                        <label for="2">Coach</label>
-                                    </div>
-                                    <p th:if="${#fields.hasErrors('role')}"
-                                       th:text="${#strings.listJoin(#fields.errors('role'), ', ')}"
-                                       class="mt-2 text-sm text-red-600" id="gender-error">Role validation error message(s).</p>
-                                </div>
-                            </div>
 
-                            <div class="sm:col-span-3">
+                            <div class="sm:col-span-2 px-4">
                                 <label for="firstName" class="block text-sm font-medium text-gray-700"
-                                       th:text="#{user.firstName}">
+                                       th:text="${coach.userData.firstName}">
                                     First name
                                 </label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <input id="firstName"
                                            type="text"
-                                           th:field="*{firstName}"
+                                           th:field="*{userData.firstName}"
                                            class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
                                            th:classappend="${#fields.hasErrors('firstName')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
                                     <div th:if="${#fields.hasErrors('firstName')}"
@@ -71,15 +56,15 @@
                             </div>
                             <!-- end::firstname[] -->
 
-                            <div class="sm:col-span-3">
+                            <div class="sm:col-span-2 px-4">
                                 <label for="lastName" class="block text-sm font-medium text-gray-700"
-                                       th:text="#{user.lastName}">
+                                       th:text="${coach.userData.lastName}">
                                     Last name
                                 </label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <input id="lastName"
                                            type="text"
-                                           th:field="*{lastName}"
+                                           th:field="*{userData.lastName}"
                                            class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
                                            th:classappend="${#fields.hasErrors('lastName')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
                                     <div th:if="${#fields.hasErrors('lastName')}"
@@ -97,7 +82,7 @@
 
                             </div>
 
-                            <div class="sm:col-span-4">
+                            <div class="sm:col-span-2 px-4">
                                 <label for="email" class="block text-sm font-medium leading-5 text-gray-700"
                                        th:text="#{user.email}">
                                     Email address
@@ -105,7 +90,7 @@
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <input id="email"
                                            type="email"
-                                           th:field="*{email}"
+                                           th:field="*{userData.email}"
                                            class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
                                            th:classappend="${#fields.hasErrors('email')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
                                     <div th:if="${#fields.hasErrors('email')}"
@@ -122,15 +107,15 @@
                                    class="mt-2 text-sm text-red-600" id="email-error">Email validation error message(s).</p>
                             </div>
 
-                            <div class="sm:col-span-4">
+                            <div class="sm:col-span-2 px-4">
                                 <label for="username" class="block text-sm font-medium leading-5 text-gray-700"
                                        th:text="#{user.username}">
-                                    Phone number
+                                    Username
                                 </label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <input id="username"
                                            type="text"
-                                           th:field="*{username}"
+                                           th:field="*{userData.username}"
                                            class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
                                            th:classappend="${#fields.hasErrors('username')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
                                     <div th:if="${#fields.hasErrors('username')}"
@@ -144,35 +129,8 @@
                                 </div>
 
                             </div>
-
-                            <div class="sm:col-span-4">
-                                <label for="password" class="block text-sm font-medium leading-5 text-gray-700"
-                                       th:text="#{user.password}">
-                                    Password
-                                </label>
-                                <div class="mt-1 relative rounded-md shadow-sm">
-                                    <input id="password"
-                                           type="password"
-                                           th:field="*{password}"
-                                           class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
-                                           th:classappend="${#fields.hasErrors('password')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
-                                    <div th:if="${#fields.hasErrors('password')}"
-                                         class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                                        <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd"
-                                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                                  clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                                <p th:if="${#fields.hasErrors('username')}"
-                                   th:text="${#strings.listJoin(#fields.errors('username'), ', ')}"
-                                   class="mt-2 text-sm text-red-600" id="phoneNumber-error">Phone number validation error message(s).</p>
-                            </div>
-
-                            <div class="sm:col-span-2"></div>
                             <!-- tag::birthday[] -->
-                            <div class="sm:col-span-2">
+                            <div class="sm:col-span-2 px-4">
                                 <label for="birthday" class="block text-sm font-medium leading-5 text-gray-700"
                                        th:text="#{user.birthday}">
                                     Birthday
@@ -180,7 +138,7 @@
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <input id="birthday"
                                            type="text"
-                                           th:field="*{dateOfBirth}"
+                                           th:field="*{userData.dateOfBirth}"
                                            class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
                                            th:classappend="${#fields.hasErrors('dateOfBirth')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
                                     <div th:if="${#fields.hasErrors('dateOfBirth')}"
@@ -197,30 +155,57 @@
                                    class="mt-2 text-sm text-red-600" id="birthday-error">Birthday validation error message(s).</p>
                             </div>
                             <!-- end::birthday[] -->
+
+                            <!-- tag::password[] -->
+                            <div class="sm:col-span-2 px-4">
+                                <label for="password" class="block text-sm font-medium leading-5 text-gray-700"
+                                       th:text="#{user.password}">
+                                    Password
+                                </label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input id="password"
+                                           type="password"
+                                           th:field="*{userData.password}"
+                                           class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
+                                           th:classappend="${#fields.hasErrors('password')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+                                    <div th:if="${#fields.hasErrors('password')}"
+                                         class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p th:if="${#fields.hasErrors('password')}"
+                                   th:text="${#strings.listJoin(#fields.errors('password'), ', ')}"
+                                   class="mt-2 text-sm text-red-600" id="phoneNumber-error">Phone number validation error message(s).</p>
+                            </div>
+                            <!-- end::password[] -->
+
                         </div>
-                    </div>
+
                     <div class="mt-8 border-t border-gray-200 pt-5">
                         <div class="flex justify-end">
-      <span class="inline-flex rounded-md shadow-sm">
-        <button type="button"
-                class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                th:text="#{cancel}">
-          Cancel
-        </button>
-      </span>
+                          <span class="inline-flex rounded-md shadow-sm">
+                            <button type="button"
+                                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                    th:text="#{cancel}">
+                              Cancel
+                            </button>
+                          </span>
                             <span class="ml-3 inline-flex rounded-md shadow-sm">
-        <button type="submit"
-                class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                th:text="#{save}">
-          Save
-        </button>
-      </span>
+                                <button type="submit"
+                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        th:text="#{save}">
+                                  Save
+                                </button>
+                            </span>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
 </div>
 </body>
 </html>

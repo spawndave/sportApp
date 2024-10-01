@@ -28,39 +28,38 @@ public class UserController {
     public String index(Model model){
         List<User> users = userService.getUsers();
         model.addAttribute("users", users);
-        //model.addAttribute("users", users);
         return "users/list";
     }
-    @GetMapping("/{id}")
-    public String editUser(@PathVariable("id") Long id, Model model){
+
+    @GetMapping("/athlete/{id}")
+    public String showAthleteData(@PathVariable("id") Long id, Model model){
         User user = userService.getUserById(id);
+
+
         model.addAttribute("user", user);
         model.addAttribute("editMode", "UPDATE");
-        return "users/edit";
+        return "users/athlete/info";
     }
 
-    @PostMapping("/{id}")
-    public String doEditUser(@PathVariable("id") Long id, User user, Model model){
-        //User user = userService.getUserById(id);
-        User user2 = (User) model.getAttribute("user");
-        userService.saveUser(user2);
-        return "redirect:/users";
-    }
 
-    @GetMapping("/registration")
+    @GetMapping("athlete/registration")
     public String registrationUser(Model model){
         model.addAttribute("user", new User());
         return "users/edit";
     }
 
 
-    @PostMapping("/registration")
-    public String registration( User user) {
+    @PostMapping("/athlete/registration")
+    public String registrationAthlete( User user) {
         userService.saveUser(user);
         return "redirect:/users";
     }
 
-
+    @PostMapping("coach/registration")
+    public String registrationCoach( User user) {
+        userService.saveUser(user);
+        return "redirect:/users";
+    }
 
 
 

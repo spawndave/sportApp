@@ -1,31 +1,53 @@
 package com.academy.sportApp.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 @Entity
-@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "training_participant")
 public class TrainingParticipant {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonBackReference
+   /* @EmbeddedId
+    private TrainingParticipantId id;*/
+    @Column(name = "training_id")
+    private Long trainingId;
+
+    @Column(name="coach_id")
+    private Long coachId;
+
+    @Column(name="athlete_id")
+    private Long athleteId;
+
     @ManyToOne
-    @JoinColumn(name = "athlete_id", nullable = false)
-    private Athlete athlete;
+    @JoinColumns(
+            {
+                    @JoinColumn(name = "athlete_id", referencedColumnName = "athlete_id",updatable = false, insertable = false),
+                    @JoinColumn(name = "coach_id", referencedColumnName = "coach_id", updatable = false, insertable = false)
+            }
+    )
+    private AthleteWithCoach athlete;
+
+    @ManyToOne
+    @JoinColumn(name = "training_id", insertable = false, updatable = false)
+    private Training training;
+
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "training_session",
-            joinColumns = @JoinColumn(name = "athlete_id"),
-            inverseJoinColumns = @JoinColumn(name = "training_id")
-    )
-    private TrainingSession trainingSession;
+    @JoinColumn(name = "tr_session_id")
+    private TrainingSession trainingSession = new TrainingSession();
 
+    public TrainingParticipant() {
+
+    }
 }
