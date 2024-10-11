@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 import java.util.Set;
@@ -13,32 +14,25 @@ import java.util.Set;
 @Entity
 
 @RequiredArgsConstructor
-//@Table(name = "coach_sport")
-//@PrimaryKeyJoinColumn(name = "coach_id")
 @DiscriminatorValue("2")
 public class Coach extends User{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "coach_athlete_sport",
+            name = "coach_sport",
             joinColumns = @JoinColumn(name = "coach_id"),
             inverseJoinColumns = @JoinColumn(name = "sport_id")
     )
     private Sport sport;
 
-    @OneToMany(mappedBy = "coach",  fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Training> trainings;
+    @OneToMany(mappedBy = "coach",  fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ToString.Exclude List<Training> trainings;
 
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
-    @JoinTable(
-            name = "coach_athlete_sport",
-            joinColumns = @JoinColumn(name = "coach_id"),
-            inverseJoinColumns = @JoinColumn(name = "athlete_id")
-    )
-    private Set<AthleteWithCoach> athletes;
-
-
+    @OneToMany(mappedBy = "coach",
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
+    @ToString.Exclude private Set<AthleteWithCoach> athletes;
 
 
 }

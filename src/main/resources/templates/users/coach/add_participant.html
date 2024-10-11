@@ -26,12 +26,12 @@
                 <tbody class="bg-white divide-y gray:divide-gray-700 ">
 
                 <tr class="text-gray-700 gray:text-gray-400 border-gray-300 " th:each="athlete : ${athletes}">
-                    <td th:replace="~{fragments/table :: dataWithLink(${athlete.data.fullName},@{/users/athlete/{id}(id=${athlete.id})})}"></td>
-                    <td th:replace="~{fragments/table :: data(contents=${athlete.data.dateOfBirth})}"></td>
-                    <td th:replace="~{fragments/table :: data(contents=${athlete.data.email})}"></td>
-                    <td th:replace="~{fragments/table :: data(contents=${athlete.data.username})}"></td>
+                    <td th:replace="~{fragments/table :: dataWithLink(${athlete.athleteData.firstName},@{/users/athlete/{id}(id=${athlete.id})})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${athlete.athleteData.dateOfBirth})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${athlete.athleteData.email})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${athlete.athleteData.username})}"></td>
                     <td class="text-xs text-center  tracking-wide  text-cyan-500 py-1">
-                        <div class="py-1"><a th:href="@{{trainingId}/{id}(trainingId=${training.id}, id=${athlete.data.id})}">Add this athlete</a> </div>
+                        <div class="py-1"><a th:href="@{{trainingId}/{id}(trainingId=${training.id}, id=${athlete.athleteData.id})}">Add this athlete</a> </div>
                     </td>
                 </tr>
 

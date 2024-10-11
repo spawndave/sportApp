@@ -19,16 +19,6 @@
         </div>
 
         <div class="fixed inset-0 z-40 flex">
-            <!--
-              Off-canvas menu, show/hide based on off-canvas menu state.
-
-              Entering: "transition ease-in-out duration-300 transform"
-                From: "-translate-x-full"
-                To: "translate-x-0"
-              Leaving: "transition ease-in-out duration-300 transform"
-                From: "translate-x-0"
-                To: "-translate-x-full"
-            -->
             <div class="relative flex w-full max-w-xs flex-1 flex-col bg-white pt-5 pb-4"
                  x-show="isVisible()"
                  x-cloak
@@ -38,16 +28,7 @@
                  x-transition:leave="transition ease-in-out duration-300 transform"
                  x-transition:leave-start="translate-x-0"
                  x-transition:leave-end="-translate-x-full">
-                <!--
-                  Close button, show/hide based on off-canvas menu state.
 
-                  Entering: "ease-in-out duration-300"
-                    From: "opacity-0"
-                    To: "opacity-100"
-                  Leaving: "ease-in-out duration-300"
-                    From: "opacity-100"
-                    To: "opacity-0"
-                -->
                 <div class="absolute top-0 right-0 -mr-12 pt-2">
                     <button type="button"
                             class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
@@ -161,7 +142,7 @@
                         Dashboard
                     </a>
 
-                <a href="/activities"
+                <a href="/sport"
                    th:classappend="${activeMenuItem == 'activities'?'bg-gray-100' : ''}"
                    class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center rounded-md px-2 py-2 text-sm font-medium">
 

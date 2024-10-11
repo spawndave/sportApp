@@ -1,6 +1,7 @@
 package com.academy.sportApp.controller;
 
-import com.academy.sportApp.model.entity.User;
+import com.academy.sportApp.dto.NewUserDto;
+import com.academy.sportApp.dto.UserDto;
 import com.academy.sportApp.service.ActivityService;
 import com.academy.sportApp.service.AthleteService;
 import com.academy.sportApp.service.CoachService;
@@ -24,40 +25,36 @@ public class UserController {
     private final AthleteService athleteService;
 
 
+
     @GetMapping
     public String index(Model model){
-        List<User> users = userService.getUsers();
+        List<UserDto> users = userService.getUsers();
+
         model.addAttribute("users", users);
         return "users/list";
     }
 
     @GetMapping("/athlete/{id}")
-    public String showAthleteData(@PathVariable("id") Long id, Model model){
-        User user = userService.getUserById(id);
-
-
+    public String showAthleteData(
+            @PathVariable("id") Long id, Model model){
+        UserDto user = userService.getUserDtoById(id);
         model.addAttribute("user", user);
-        model.addAttribute("editMode", "UPDATE");
         return "users/athlete/info";
     }
 
 
-    @GetMapping("athlete/registration")
+    @GetMapping("/registration")
     public String registrationUser(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("roles", userService.getRoles());
+        model.addAttribute("activities", activityService.getActivities());
+        model.addAttribute("user", new NewUserDto());
         return "users/edit";
     }
 
 
-    @PostMapping("/athlete/registration")
-    public String registrationAthlete( User user) {
-        userService.saveUser(user);
-        return "redirect:/users";
-    }
-
-    @PostMapping("coach/registration")
-    public String registrationCoach( User user) {
-        userService.saveUser(user);
+    @PostMapping("/registration")
+    public String registrationAthlete( NewUserDto userDto) {
+        userService.saveUser(userDto);
         return "redirect:/users";
     }
 

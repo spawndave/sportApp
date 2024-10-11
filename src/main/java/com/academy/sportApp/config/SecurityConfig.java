@@ -18,9 +18,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize ->{
            authorize.requestMatchers("/coach").hasAnyAuthority("ADMIN", "COACH")
-                   .anyRequest().authenticated();
+                  .requestMatchers("/users/athlete/registration").hasAnyAuthority("ADMIN")
+                   .anyRequest()
+                   .authenticated();
         }).formLogin(
-                form -> form.defaultSuccessUrl("/users")
+                form -> form.defaultSuccessUrl("/sport")
                         .permitAll()
         );
         return http.build();

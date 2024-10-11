@@ -1,16 +1,19 @@
 package com.academy.sportApp.service.impl;
 
-import com.academy.sportApp.model.entity.*;
+import com.academy.sportApp.model.entity.AthleteWithCoach;
+import com.academy.sportApp.model.entity.Coach;
+import com.academy.sportApp.model.entity.Training;
 import com.academy.sportApp.model.repository.CoachAthleteSportRepository;
 import com.academy.sportApp.model.repository.CoachRepository;
+import com.academy.sportApp.service.AthleteService;
 import com.academy.sportApp.service.CoachService;
 import com.academy.sportApp.service.TrainingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +21,7 @@ public class CoachServiceImpl implements CoachService {
     private final CoachRepository coachRepository;
     private final CoachAthleteSportRepository athleteCoachRepository;
     private final TrainingService trainingService;
+    private final AthleteService athleteService;
 
     @Override
     public List<Coach> getAllCoaches() {
@@ -47,35 +51,30 @@ public class CoachServiceImpl implements CoachService {
     @Override
     public Training getCoachTrainingById(Long trainingId, Coach coach) {
         return coach.getTrainings().stream()
-                .filter(training->training.getId().equals(trainingId)).findAny().get();
+                .filter(training -> training.getId().equals(trainingId)).findAny().get();
     }
 
-    @Override
-    public void addTrainingPatricipant(Training training, Long user_id) {
-        TrainingSession trainingSession = new TrainingSession();
-        TrainingParticipant participant = TrainingParticipant.builder().
-                athleteId(user_id).
-                coachId(training.getCoachId()).
-                trainingSession(trainingSession).
-                build();
-        training.getParticipants().add(participant);
-    }
 
     @Override
     public Set<AthleteWithCoach> getAllCoachAthletesNotInTraining(Training training) {
-        Set<TrainingParticipant> trainingParticipants = training.getParticipants();
-        Set<AthleteWithCoach> coachAthletesList = training.getCoach().getAthletes();
-        Set<AthleteWithCoach> filteredList = new HashSet<>();
-        for (AthleteWithCoach athlete : coachAthletesList) {
-            for (TrainingParticipant participant : trainingParticipants) {
-                if (Long.compare(participant.getAthleteId(), athlete.getAthleteId()) != 0) {
-                    filteredList.add(athlete);
-                }
-            }
-        }
+        Set<AthleteWithCoach> trainingParticipants = training.getParticipants()
+                .stream().map(p -> p.getAthlete()).collect(Collectors.toSet());
+        Set<AthleteWithCoach> resultList = training.getCoach().getAthletes();
+        resultList.removeAll(trainingParticipants);
 
-        return filteredList;
+        return resultList;
     }
 
+    @Override
+    public void addAthleteForTrainings(Coach coach, Long athleteId) {
+        AthleteWithCoach athlete = new AthleteWithCoach();
+        athlete.builder()
+                .athleteData(athleteService.getAthleteById(athleteId))
+                .coach(coach)
+                .sport(coach.getSport())
+                .build();
+        saveAthlete(athlete);
+        coach.getAthletes().add(athlete);
+    }
 
 }

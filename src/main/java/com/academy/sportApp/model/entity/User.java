@@ -2,6 +2,7 @@ package com.academy.sportApp.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@RequiredArgsConstructor
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -38,35 +40,33 @@ public class User implements UserDetails {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "date_of_birth")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dateOfBirth;
-
     @OneToOne
     @JoinColumn(name = "role_id", insertable = false, updatable = false)
     private Role role;
 
+    @Column(name = "date_of_birth")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDate dateOfBirth;
+
     @Column(name = "enabled", nullable = false)
-    private Boolean enabled;
+    private Boolean enabled = true;
 
     @Column(name = "account_non_expired", nullable = false)
-    private Boolean accountNonExpired;
+    private Boolean accountNonExpired = true;
 
     @Column(name = "account_non_locked", nullable = false)
-    private Boolean accountNonLocked;
+    private Boolean accountNonLocked = true;
 
     @Column(name = "credentials_non_expired", nullable = false)
-    private Boolean credentialsNonExpired;
+    private Boolean credentialsNonExpired = true;
 
-
-
-    public String getFullName() {
-        return String.format("%s %s", firstName, lastName);
-    }
+    @Transient
+    private Boolean permission = true;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         GrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
         return List.of(authority);
     }
+
 }

@@ -1,11 +1,12 @@
 package com.academy.sportApp.controller;
 
 import com.academy.sportApp.model.entity.Training;
+import com.academy.sportApp.model.entity.TrainingParticipant;
+import com.academy.sportApp.service.AthleteService;
 import com.academy.sportApp.service.CoachService;
 import com.academy.sportApp.service.TrainingService;
 import com.academy.sportApp.service.UserService;
-import com.academy.sportApp.service.impl.AthleteServiceImpl;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,49 +16,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/training")
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class TrainingController {
 
-    private final CoachService coachService;
-    private final UserService  userService;
     private final TrainingService trainingService;
-    private final AthleteServiceImpl athleteService;
+    private final CoachService coachService;
+    private final AthleteService athleteService;
+    private final UserService userService;
+
 
     @GetMapping("/{id}")
     public String index(@PathVariable("id") Long id, Model model){
-        Training training = trainingService.getTraningById(id);
+        Training training = trainingService.getTrainingById(id);
         model.addAttribute("training", training);
         return "training/info";
     }
 
-    @GetMapping("/remove_participant/{trainingId}")
-    public String getParticipantsList(@PathVariable("trainingId") Long trainingId, Model model){
-        Training training = trainingService.getTraningById(trainingId);
-        model.addAttribute("training", training);
-        return "training/remove_participant";
-    }
 
-    @GetMapping("/remove_participant/{trainingId}/{participantId}")
-    public String getParticipantsList(@PathVariable("trainingId") Long trainingId,
-                                      @PathVariable("participantId") Long participantId,
-                                      Model model){
-        Training training = trainingService.getTraningById(trainingId);
-        trainingService.removeParticipantFromTraining(training, participantId);
-        model.addAttribute("training", training);
-        return "redirect: training/" + trainingId;
-    }
-
-    @GetMapping("edit-training/{id}")
+    @GetMapping("/edit-training/{id}")
     public String editTraining(@PathVariable("id")Long id, Model model){
-        Training training = trainingService.getTraningById(id);
+        Training training = trainingService.getTrainingById(id);
         model.addAttribute("training", training);
         return "training/edit-training";
     }
-    @PostMapping("edit")
+
+    @PostMapping("/edit-training")
     public String saveTraining(Training training, Model model){
-        training = trainingService.updateTraining(training);
+        trainingService.updateTraining(training);
         model.addAttribute("training", training);
-        return "training/edit-training";
+        return "redirect:training/" + training.getId();
+    }
+
+    @GetMapping("/training-details/{participantId}")
+    public String trainingDetails(
+            @PathVariable("participantId") Long participantId,
+            Model model){
+        TrainingParticipant athlete = athleteService.getTrainingParticipant(participantId);
+        model.addAttribute("athlete", athlete);
+        return "users/athlete/training/info";
+    }
+
+    @PostMapping("/update-training-session/{id}")
+    public String updateTrainingSession(
+            @PathVariable("id") String participantId,
+            TrainingParticipant participant, Model model){
+        trainingService.updateTrainingData(participant, Long.valueOf(participantId));
+        return "redirect:/training/training-details/" + participantId;
     }
 
 

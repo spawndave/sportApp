@@ -16,14 +16,6 @@ public class Sport extends ModifierOptions{
     private String name;
     private String description;
 
-    @ManyToOne
-    @JoinTable(
-            name = "coach_athlete_sport",
-            joinColumns = @JoinColumn(name = "sport_id"),
-            inverseJoinColumns = @JoinColumn(name = "coach_id")
-    )
-    private Coach coach;
-
 
     @OneToMany
     @JoinTable(
@@ -33,6 +25,7 @@ public class Sport extends ModifierOptions{
     )
     private List<Athlete> athletes;
 
-
+    @OneToMany(mappedBy = "sport")
+    private List<Coach> coaches;
 
 }

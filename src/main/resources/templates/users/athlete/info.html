@@ -3,69 +3,107 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{layout/layout}"
-        th:with="activeMenuItem='dashboard'">
+        th:with="activeMenuItem='activities'">
 
 <head>
+
     <title>User Info</title>
 </head>
 <body>
-<div layout:fragment="page-content" class="container px-6 py-4">
+        <div layout:fragment="page-content" class="container px-6 py-4">
+            <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 md:px-8">
+                <h1 class="text-2xl font-semibold text-gray-900">Athlete info
+                </h1>
+            </div>
 
-    <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 md:px-8">
-        <h1 class="text-2xl font-semibold text-gray-900">Athlete info
-        </h1>
-    </div>
+            <label class="block mb-6">
+                <span class="text-gray-700"><b>Name:</b></span>
+                <span th:text="${athlete.firstName}"></span>
+            </label>
 
-    <div class="min-w-0 p-4  shadow-xs ">
-        <label class="block mb-6">
-            <span class="text-gray-700"><b>Name:</b></span>
-            <span th:text="${athlete.fullName}"></span>
-        </label>
+            <label class="block mb-6">
+                <span class="text-gray-700"><b>Date of birth: </b></span>
+                <span th:text="${athlete.dateOfBirth}"></span>
+            </label>
+            <label class="block mb-6">
+                <span class="text-gray-700"><b>Email: </b></span>
+                <span th:text="${athlete.email}"></span>
+            </label>
+            <div class="max-w-7xl mx-auto px-4 py-1 sm:px-6 md:px-8 flex flex-row justify-between">
+                <h2 class="text-2xl font-semibold text-gray-900">Activities with coach
+                </h2>
+                <div th:replace="~{fragments/titles :: buttonLink(@{Add activity}, ${athlete.username}+'/add-activity')}"></div>
+            </div>
+            <div class="py-4" th:each="activity: ${athlete.activitiesWithCoach}">
+               <div class="flex flex-col">
+                   <div class="my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+                       <div class="my-2 align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
 
-        <label class="block mb-6">
-            <span class="text-gray-700"><b>Date of birth: </b></span>
-            <span th:text="${athlete.dateOfBirth}"></span>
-        </label>
-        <label class="block mb-6">
-            <span class="text-gray-700"><b>Email: </b></span>
-            <span th:text="${athlete.email}"></span>
-        </label>
-        <label class="block mb-6">
-            <span class="text-gray-700"><b>Username: </b></span>
-            <span th:text="${athlete.username}"></span>
-        </label>
-        <h4 class="text-2xl font-semibold text-gray-900">Sports
-        </h4>
-        <div class="my-6 align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
-            <table class="w-full whitespace-no-wrap`">
-                <thead>
+                            <table class="w-full whitespace-no-wrap`">
+                                <thead>
+                                <tr class="py-2 text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                                    <th class="px-4 py-3 ">Sport</th>
+                                    <th class="px-4 py-3 ">Coach</th>
+                                    <th class="px-4 py-3 ">Trainings num:</th>
+                                </tr>
 
-                <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
-                    <th th:replace="~{fragments/table :: header(@{Sport})}"></th>
-                    <th th:replace="~{fragments/table :: header(@{Coach})}"></th>
-                    <th th:replace="~{fragments/table :: header(@{Trainings})}"></th>
-                </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y gray:divide-gray-700 ">
+                                <tr class="text-center text-gray-700 gray:text-gray-400 border-gray-300 ">
+                                    <td class="text-center" th:replace="~{fragments/table :: dataWithLink(${activity.sport.name},@{/sport/{name}(name=${activity.sport.name})})}"></td>
+                                    <td th:replace="~{fragments/table :: dataWithLink(${activity.coach.firstName},@{/coach/{username}(username=${activity.coach.username})})}"></td>
+                                    <td th:replace="~{fragments/table :: dataWithLink(${activity.trainings.size()},@{/athlete/{username}/training-journal/{id}
+                                    (username=${athlete.username}, id=${activity.id})})}">
+                                    </td>
 
-                </thead>
-                <tbody class="bg-white divide-y gray:divide-gray-700 ">
+                                </tr>
 
-                <tr class="text-gray-700 gray:text-gray-400 border-gray-300 " th:each="activity : ${athlete.athleteActivities}">
-                    <td th:replace="~{fragments/table :: dataWithLink(${activity.coach.sport.name},@{/sport/{id}(id=${activity.coach.sport.id})})}"></td>
-                    <td th:replace="~{fragments/table :: dataWithLink(${activity.coach.fullName}, @{/coach/{username}(username=${activity.coach.username})})}"></td>
-                    <td class="text-sm leading-5 text-cyan-500 text-center ">
-                        <div th:each="participant : ${activity.trainings}">
-                            <a  th:href="@{/training/{training_id}(training_id=${participant.training.id})}"
-                                th:text="${participant.training.name}"  class="text-center"></a>
-                        </div>
-                    </td>
-                </tr>
+                                </tbody>
+                            </table>
+                       </div>
+                   </div>
+               </div>
+           </div>
+            <div class="max-w-7xl mx-auto px-4 py-1 sm:px-6 md:px-8 flex flex-row justify-between">
+                <h2 class="text-2xl font-semibold text-gray-900">Activities without coach
+                </h2>
+            </div>
+            <div class="py-2" th:each="activity: ${athlete.activitiesWithOutCoach}">
 
-                </tbody>
-            </table>
+            <div class="flex flex-col">
+                <div class="my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+                    <div class="my-2 align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
 
+                        <table class="w-full whitespace-no-wrap`">
+                            <thead>
+                            <tr class="py-2 text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                                <th class="px-4 py-3 ">Sport</th>
+                                <th class="px-4 py-3 ">Coaches</th>
+                                <th class="px-4 py-3 "></th>
+                            </tr>
+
+                            </thead>
+                            <tbody class="bg-white divide-y gray:divide-gray-700 ">
+                            <tr class="text-center text-gray-700 gray:text-gray-400 border-gray-300 ">
+                                <td class="text-center" th:replace="~{fragments/table :: dataWithLink(${activity.name},@{/sport/{name}(name=${activity.name})})}"></td>
+                                <td class="flex flex-row align-middle text-sm leading-5 text-cyan-500 text-center center">
+                                    <label for="coaches" class="text-center py-3 px-2 text-sm font-medium text-gray-900 dark:text-white" >Coach:</label>
+                                    <select th:each="coach: ${activity.coaches}" id="coaches" class="my-2 w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                                        <option  th:value="${coach.id}" th:text="${coach.firstName}"></option>
+                                    </select>
+                                </td>
+                                <td class="text-center text-amber-700" th:replace="~{fragments/table :: dataWithLink(@{Send request for training},@{/sport/{name}(name=${activity.name})})}"></td>
+
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
-</div>
+
+    </div>
 </body>
 </html>

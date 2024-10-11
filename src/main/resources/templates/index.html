@@ -11,20 +11,6 @@
     </head>
 
     <body>
-    <!--<section layout:fragment="page-content">
-        <div class="mb-4">Main content of the page goes here</div>
-        <div layout:replace="~{layout/admonition :: admonition(type='NOTE')}"> 1
-            <div layout:fragment="message"> 2
-                This is an example note message.
-            </div>
-        </div>
-        <div layout:replace="~{layout/admonition :: admonition(type='TIP')}"> 3
-            <div layout:fragment="message">
-                You can use <span class="italic">parameters</span> with
-                layouts.
-            </div>
-        </div>
-    </section>-->
         <div layout:fragment="page-content">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                 <h1 class="text-2xl font-semibold text-gray-900">Users</h1>
@@ -33,7 +19,7 @@
                 <div class="py-4">
                     <ul class="ml-4">
                         <li th:each="user : ${users}" class="list-disc">
-                            <span th:text="${user.fullName}"></span>
+                            <span th:text="${user.firstName}"></span>
                         </li>
                     </ul>
                 </div>

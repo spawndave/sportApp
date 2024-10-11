@@ -26,12 +26,12 @@
                 <tbody class="bg-white divide-y gray:divide-gray-700 ">
 
                 <tr class="text-gray-700 gray:text-gray-400 border-gray-300 " th:each="participant : ${training.participants}">
-                    <td th:replace="~{fragments/table :: dataWithLink(${participant.athlete.data.fullName},@{/users/athlete/{id}(id=${participant.athlete.data.id})})}"></td>
-                    <td th:replace="~{fragments/table :: data(contents=${participant.athlete.data.dateOfBirth})}"></td>
-                    <td th:replace="~{fragments/table :: data(contents=${participant.athlete.data.email})}"></td>
-                    <td th:replace="~{fragments/table :: data(contents=${participant.athlete.data.username})}"></td>
+                    <td th:replace="~{fragments/table :: dataWithLink(${participant.athlete.athleteData.fullName},@{/users/athlete/{id}(id=${participant.athlete.athleteData.id})})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${participant.athlete.athleteData.dateOfBirth})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${participant.athlete.athleteData.email})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${participant.athlete.athleteData.username})}"></td>
                     <td class="text-xs text-center  tracking-wide  text-cyan-500 py-1">
-                        <div class="py-1"><a th:href="@{{trainingId}/{participantId}(trainingId=${training.id}, participantId=${participant.id})}">Remove this athlete</a> </div>
+                        <div class="py-1"><a th:href="@{/coach/remove_participant/{trainingId}/{participantId}(trainingId=${training.id}, participantId=${participant.id})}">Remove this athlete</a> </div>
                     </td>
                 </tr>
 

@@ -14,6 +14,6 @@ public interface CoachService {
     void save(Coach coach);
     void saveAthlete(AthleteWithCoach athlete);
     Training getCoachTrainingById(Long trainingId, Coach coach);
-    void addTrainingPatricipant(Training training, Long user_id);
     Set<AthleteWithCoach> getAllCoachAthletesNotInTraining(Training training);
+    void addAthleteForTrainings(Coach coach, Long athleteId);
 }

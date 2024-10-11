@@ -1,4 +1,4 @@
-package com.academy.sportApp.service.impl.dto;
+package com.academy.sportApp.dto;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

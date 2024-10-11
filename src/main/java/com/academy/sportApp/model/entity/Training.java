@@ -1,10 +1,11 @@
 package com.academy.sportApp.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -12,31 +13,29 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
-public class Training extends ModifierOptions{
+@AllArgsConstructor
+@NoArgsConstructor
+public class Training {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate date;
     private String location;
 
-    @Column(name = "coach_id")
-    private Long coachId;
 
-    @Column(name = "sport_id")
-    private Long sportId;
-
-    @ManyToOne
-    @JoinColumn(name = "coach_id", updatable = false, insertable = false)
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coach_id")
     private Coach coach;
 
-    @OneToMany(mappedBy = "training")
+    @OneToMany(mappedBy = "training", fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
     private Set<TrainingParticipant> participants;
 
-    @ManyToOne
-    @JoinColumn(name = "sport_id",  updatable = false, insertable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sport_id")
     private Sport sport;
 }

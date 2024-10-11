@@ -1,6 +1,8 @@
 package com.academy.sportApp.service;
 
+import com.academy.sportApp.model.entity.Coach;
 import com.academy.sportApp.model.entity.Training;
+import com.academy.sportApp.model.entity.TrainingParticipant;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,8 +11,9 @@ import java.util.List;
 
 public interface TrainingService {
     List<Training> getAllTrainings();
-    Training getTraningById(Long id);
-    void addParticipantToTraining(Long trainingId, Long participantId, Long coachId);
-    void removeParticipantFromTraining(Training training, Long participantId);
-    Training updateTraining(Training training);
+    Training getTrainingById(Long id);
+    void addParticipantToTraining(Long trainingId, Long participantId, Coach coach);
+    void removeParticipantFromTraining(Long trainingId, Long participantId);
+    void updateTraining(Training training);
+    void updateTrainingData(TrainingParticipant participant, Long participantId);
 }

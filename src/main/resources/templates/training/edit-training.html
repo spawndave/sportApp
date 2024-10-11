@@ -7,6 +7,7 @@
 
 <head>
     <title>Edit training</title>
+
 </head>
 <body>
 <div class="container px-6 py-4" layout:fragment="page-content">
@@ -23,8 +24,8 @@
             </label>
             <form id="training-form"
                   th:object="${training}"
-                  th:action="@{/training/edit}"
-                  method="post">
+                  th:action="@{/training/edit-training}"
+                  method="POST">
                 <input type="hidden" th:field="*{id}" th:value="${training.id}"/>
                 <label class="block mb-6">
                     <span class="text-gray-700">Name</span>
@@ -49,15 +50,16 @@
                            th:field="*{location}"
                            th:value="${training.location}" />
                 </label>
+
                 <label class="block mb-6">
                     <span class="text-gray-700">Date</span>
-                    <input class=" block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            name="date" placeholder="Select date" type="date"
-                           th:field="*{date}"
-                           th:value="${training.date}"/>
+                    <input
+                           class=" block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                           name="date"
+                           type="text"
+                           th:value="${#temporals.format(training.date, 'dd-MM-YYYY')}"/>
                 </label>
-
-                    <label class="block mb-6  mt-1">
+                <label class="block mb-6  mt-1">
                         <div class="text-gray-700 w-3/4 flex justify-between">
                             <p class="w-2/4">Participants</p>
                             <div  th:replace="~{fragments/titles :: buttonLink('Add participant', @{{username}/add_participant/{id}(username=${training.coach.username}, id=${training.id})})}"></div>
@@ -65,8 +67,8 @@
 
                         <ul class=" mt-1 text-sm leading-5 ">
                             <li  class="flex-row" th:each="participant: ${training.participants}">
-                                <a class ="text-cyan-500" th:href="@{edit-training/{training_id}/{id}(training_id=${training.id}, id=${participant.athlete.data.id})}"
-                                    th:text="${participant.athlete.data.fullName}">
+                                <a class ="text-cyan-500" th:href="@{edit-training/{training_id}/{id}(training_id=${training.id}, id=${participant.athlete.athleteData.id})}"
+                                    th:text="${participant.athlete.athleteData.fullName}">
                                 </a>
                                 <span class="py-1 text-indigo-700"><a class="text-indigo-700" th:href="@{/training/remove_participant/{id}(id=${training.id})}" > - Remove participant</a> </span>
                             </li>
@@ -85,5 +87,6 @@
     </div>
 </div>
 </div>
+
 </body>
 </html>

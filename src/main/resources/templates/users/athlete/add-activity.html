@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/layout}"
+        th:with="activeMenuItem ='activities'">
+
+<head>
+    <title>Athletes</title>
+</head>
+<body>
+    <div layout:fragment="page-content" class="container px-6 py-4">
+
+        <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
+            <table class="w-full whitespace-no-wrap`">
+                <thead>
+                <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                    <th class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-center">Sport</th>
+                    <th class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-center">Coaches</th>
+                    <th class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-center">Athletes</th>
+                    <th class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-center"></th>
+                </tr>
+
+                </thead>
+                <tbody class="bg-white divide-y gray:divide-gray-700 ">
+                    <tr class="text-gray-700 gray:text-gray-400 border-gray-300 " th:each="activity : ${activities}">
+                        <td th:replace="~{fragments/table :: dataWithLink(${activity.name}, @{/activity/{name}(name=${activity.name})})}"></td>
+                        <td th:text="${activity.coaches.size()}" class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-center"></td>
+                        <td th:text="${activity.athletes.size()}" class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-center"></td>
+                        <td class="text-xs text-center  tracking-wide  text-cyan-500 py-1">
+                            <div class="py-1"><a th:href="@{/athlete/{username}/add-activity/{activityId}(username=${athlete.username},
+                                activityId=${activity.id})}">Add this activity</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

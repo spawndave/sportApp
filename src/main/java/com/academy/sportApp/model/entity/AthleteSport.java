@@ -13,10 +13,14 @@ public class AthleteSport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="athlete_id")
-    private Long athleteId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="sport_id")
+    private Sport sport;
 
-    @Column(name="sport_id")
-    private Long sportId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "athlete_id", referencedColumnName = "id")
+    private Athlete athleteData;
+
+
 
 }

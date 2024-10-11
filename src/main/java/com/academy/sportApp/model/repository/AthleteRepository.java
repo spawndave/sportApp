@@ -8,8 +8,7 @@ import java.util.List;
 
 
 public interface AthleteRepository extends JpaRepository<Athlete, Long> {
-    @Query("FROM AthleteSport  where sportId=:id  and athleteId not in " +
-            "( select athleteId from AthleteWithCoach where sportId =: id) ")
-    List<Athlete> getAthletesBySportIdNotIn(Long id);
-
+    @Query("From Athlete where id  in(select athleteData.id FROM AthleteSport  where sport.id=:sportId and athleteData.id  not in " +
+            "( select athleteData.id from AthleteWithCoach where sport.id =:sportId))")
+    List<Athlete> getAthletesBySportWithoutCoach(Long sportId);
 }

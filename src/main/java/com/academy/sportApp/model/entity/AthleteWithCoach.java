@@ -1,38 +1,38 @@
 package com.academy.sportApp.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
+@Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "coach_athlete_sport")
 public class AthleteWithCoach {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "coach_id")
-    private Long coachId;
-    @Column(name="athlete_id")
-    private Long athleteId;
-
-    @Column(name="sport_id")
-    private Long sportId;
-
     @ManyToOne
-    @JoinColumn(name = "athlete_id", updatable = false, insertable = false)
-    private Athlete data;
+    @JoinColumn(name="sport_id")
+    private Sport sport;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "athlete_id", referencedColumnName = "id")
+    private Athlete athleteData;
 
 
-    @OneToMany(mappedBy = "athlete")
-    private List<TrainingParticipant> trainings;
+    @OneToMany(mappedBy = "athlete",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<TrainingParticipant> trainings;
 
-    @ManyToOne
-    @JoinColumn(name = "coach_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "coach_id")
     private Coach coach;
 
 
