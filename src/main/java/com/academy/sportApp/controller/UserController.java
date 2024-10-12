@@ -3,8 +3,6 @@ package com.academy.sportApp.controller;
 import com.academy.sportApp.dto.NewUserDto;
 import com.academy.sportApp.dto.UserDto;
 import com.academy.sportApp.service.ActivityService;
-import com.academy.sportApp.service.AthleteService;
-import com.academy.sportApp.service.CoachService;
 import com.academy.sportApp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,15 +19,12 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final ActivityService activityService;
-    private final CoachService coachService;
-    private final AthleteService athleteService;
 
 
 
     @GetMapping
     public String index(Model model){
         List<UserDto> users = userService.getUsers();
-
         model.addAttribute("users", users);
         return "users/list";
     }

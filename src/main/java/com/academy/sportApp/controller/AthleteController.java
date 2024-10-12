@@ -34,7 +34,7 @@ public class AthleteController {
         return "users/athlete/info";
     }
 
- @GetMapping("/{username}/training-journal/{id}")
+    @GetMapping("/{username}/training-journal/{id}")
     public String getTrainingJournal(
             @PathVariable("username") String username,
             @PathVariable("id") Long id,
@@ -42,6 +42,14 @@ public class AthleteController {
         AthleteWithCoach athlete = athleteService.getTrainingJournal(id);
         model.addAttribute("athlete", athlete);
         return "users/athlete/training/training-journal";
+    }
+    @GetMapping("/{username}/training-journal")
+    public String getTrainingJournalAlltrainings(
+            @PathVariable("username") String username,
+            Model model){
+        Athlete athlete = athleteService.getAthleteByUsername(username);
+        model.addAttribute("athlete", athlete);
+        return "users/athlete/training/training-journal-all";
     }
 
 

@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class TrainingServiceImpl implements TrainingService {
@@ -79,6 +82,13 @@ public class TrainingServiceImpl implements TrainingService {
         trainingSession.setDifficulty(updatedParticipant.getTrainingSession().getDifficulty());
         participant.setTrainingSession(trainingSession);
         trainingParticipantRepository.save(participant);
+    }
+
+    @Override
+    public boolean isCurrUserTrainingParticipant(Training training, Long currUserId) {
+        Set<TrainingParticipant> set =  training.getParticipants().stream()
+                .filter(part-> part.getAthleteData().getId() == currUserId).collect(Collectors.toSet());
+        return set.size() > 0;
     }
 
     public List<TrainingParticipant> getTrainingsByAthleteIdAndCoachId(Athlete athleteData, Coach coach) {

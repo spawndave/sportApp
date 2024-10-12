@@ -2,11 +2,13 @@ package com.academy.sportApp.controller;
 
 import com.academy.sportApp.model.entity.Training;
 import com.academy.sportApp.model.entity.TrainingParticipant;
+import com.academy.sportApp.model.entity.User;
 import com.academy.sportApp.service.AthleteService;
 import com.academy.sportApp.service.CoachService;
 import com.academy.sportApp.service.TrainingService;
 import com.academy.sportApp.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +28,13 @@ public class TrainingController {
 
 
     @GetMapping("/{id}")
-    public String index(@PathVariable("id") Long id, Model model){
+    public String index(
+            @AuthenticationPrincipal User currUser,
+            @PathVariable("id") Long id, Model model){
         Training training = trainingService.getTrainingById(id);
+        Boolean isParticipant = trainingService.isCurrUserTrainingParticipant(training,currUser.getId());
         model.addAttribute("training", training);
+        model.addAttribute("isParticipant", isParticipant);
         return "training/info";
     }
 

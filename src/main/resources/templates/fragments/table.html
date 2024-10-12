@@ -37,6 +37,23 @@
          th:text="${linkText}"
          class="text-indigo-500 hover:text-indigo-900"></a>
     </td>
+
+    <td th:fragment="dataUserEditOrView(isAdmin, userRole, userName)"
+        class="px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-center">
+      <div th:if="${isAdmin eq false}">
+          <a th:href="@{/{userRole}/{userName}(userRole=${userRole}, userName=${userName})}"
+             th:text="@{View details}"
+             class="text-indigo-500 hover:text-indigo-900"></a>
+      </div>
+      <div th:if="${isAdmin}">
+          <a th:href="@{/users/edit/{userName}}"
+             th:text="@{Edit}"
+             class="text-indigo-500 hover:text-indigo-900"></a>
+      </div>
+      <a th:href="${linkUrl}"
+         th:text="${linkText}"
+         class="text-indigo-500 hover:text-indigo-900"></a>
+    </td>
     <!-- end::tdWithLink[] -->
   </tr>
   </tbody>

@@ -28,7 +28,11 @@
                             class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             id="user-menu-button" aria-expanded="false" aria-haspopup="true"
                             @click="toggleVisibility()">
+                        <span th:text="${#strings.toLowerCase(#authentication.principal.role.name)}"
+                              class="block px-2 py-2 text-sm text-gray-700"
+                        ></span>
                         <span sec:authentication="name"></span>
+
                     </button>
                 </div>
 
@@ -42,8 +46,11 @@
                      x-transition:leave="transition ease-in duration-75 transform"
                      x-transition:leave-start="opacity-100 scale-100"
                      x-transition:leave-end="opacity-0 scale-95">
-                    <!-- Active: "bg-gray-100", Not Active: "" -->
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                    <!-- Active: "bg-gray-100", Not Active: "${#authentication.principal.id" -->
+
+                    <a th:href="${'/'+#strings.toLowerCase(#authentication.principal.role.name)
+                    + '/' + #authentication.principal.username}"
+                       class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
                        id="user-menu-item-0">Your Profile</a>
 
                     <a href="/logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"

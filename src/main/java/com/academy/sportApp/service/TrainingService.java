@@ -16,4 +16,5 @@ public interface TrainingService {
     void removeParticipantFromTraining(Long trainingId, Long participantId);
     void updateTraining(Training training);
     void updateTrainingData(TrainingParticipant participant, Long participantId);
+    boolean isCurrUserTrainingParticipant(Training training, Long currUserId);
 }

@@ -1,29 +1,37 @@
 <!DOCTYPE html>
-<<html
+<html
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{layout/layout}"
-        th:with="activeMenuItem='dashboard'">
+        th:with="activeMenuItem='dashboard'"
+>
 
 <head>
     <title>User Info</title>
 </head>
 <body>
-<div layout:fragment="page-content" class="container px-6 py-4">
+
+<div layout:fragment="page-content"
+     th:with="loggedInUserId=${#authentication.principal.id}"
+     class="container px-6 py-4">
 
     <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 md:px-8">
         <h1 class="text-2xl font-semibold text-gray-900">Coach info
         </h1>
     </div>
+    <label class="block mb-6">
+        <span class="text-gray-700"><b>Sport: </b></span>
+        <span th:text="${coach.sport.name}"></span>
+    </label>
 
     <label class="block mb-6">
         <span class="text-gray-700"><b>Name:</b></span>
-        <span th:text="${coach.firstName}"></span>
+        <span th:text="${coach.firstName +' '+ coach.lastName }"></span>
     </label>
 
     <label class="block mb-6">
         <span class="text-gray-700"><b>Date of birth: </b></span>
-        <span th:text="${coach.dateOfBirth}"></span>
+        <span th:text="${#temporals.format(coach.dateOfBirth, 'dd-MM-yyyy')}"></span>
     </label>
     <label class="block mb-6">
         <span class="text-gray-700"><b>Email: </b></span>
@@ -35,7 +43,7 @@
     </label>
 
     <div
-            th:if="${coach.permission}"
+            th:if="${loggedInUserId eq 2 or loggedInUserId eq coach.id}"
             class="py-4">
         <div class="flex flex-col">
             <div class="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -64,7 +72,7 @@
                             th:each="athlete : ${coach.athletes}">
                             <td th:replace="~{fragments/table :: dataWithLink(@{${athlete.athleteData.firstName} +' '+  ${athlete.athleteData.lastName}},
                             @{/athlete/{username}(username=${athlete.athleteData.username})})}"></td>
-                            <td th:replace="~{fragments/table :: data(contents=${athlete.athleteData.dateOfBirth})}"></td>
+                            <td th:replace="~{fragments/table :: data(contents=${#temporals.format(athlete.athleteData.dateOfBirth, 'dd-MM-yyyy')})}"></td>
                             <td th:replace="~{fragments/table :: data(contents=${athlete.athleteData.email})}"></td>
                             <td th:replace="~{fragments/table :: data(contents=${coach.sport.name})}"></td>
                             <td th:replace="~{fragments/table :: data(contents=${athlete.trainings.size()})}"></td>

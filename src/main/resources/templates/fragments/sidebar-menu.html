@@ -163,7 +163,8 @@
                         Training calendar
                     </a>
 
-                    <a href="#"
+                    <a th:href="${'/'+#strings.toLowerCase(#authentication.principal.role.name)
+                       + '/' + #authentication.principal.username +'/training-journal'}"
                        class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center rounded-md px-2 py-2 text-sm font-medium">
 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
