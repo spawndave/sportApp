@@ -1,6 +1,7 @@
 package com.academy.sportApp.service.impl;
 
 import com.academy.sportApp.model.entity.*;
+import com.academy.sportApp.model.enums.TrainingDifficulty;
 import com.academy.sportApp.model.enums.TrainingStatus;
 import com.academy.sportApp.model.repository.*;
 import com.academy.sportApp.service.TrainingService;
@@ -8,6 +9,8 @@ import com.academy.sportApp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,17 +41,18 @@ public class TrainingServiceImpl implements TrainingService {
         Training training = trainingRepository.findById(trainingId).orElse(null);
         Athlete athleteData = athleteRepository.getReferenceById(athleteId);
         AthleteWithCoach athlete = coachAthleteSportRepository.getAthleteWithCoachByCoachAndAthleteData(coach, athleteData);
-        TrainingSession trainingSession = TrainingSession.builder().
-                data(athleteData).
-                training(training).build();
+        TrainingSession trainingSession = TrainingSession.builder()
+            .data(athleteData)
+            .difficulty(TrainingDifficulty.DEFAULT)
+            .training(training).build();
+            trainingSession.setCreatedAt(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
         TrainingParticipant participant = TrainingParticipant.builder()
-                .training(training)
-                .athlete(athlete)
-                .athleteData(athleteData)
-                .trainingSession(trainingSession)
-                .coach(coach)
-                .status(TrainingStatus.NOT_COMPLETED)
-                .build();
+            .training(training)
+            .athlete(athlete)
+            .athleteData(athleteData)
+            .trainingSession(trainingSession)
+            .coach(coach)
+            .status(TrainingStatus.NOT_COMPLETED).build();
         trainingParticipantRepository.save(participant);
     }
     @Override

@@ -20,17 +20,20 @@ import java.util.List;
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn( name = "role_id", discriminatorType = DiscriminatorType.INTEGER)
-public class User implements UserDetails {
+public class User extends ModifierOptions implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
+
     @Column(nullable = false)
     private String username;
 
+
     @Column(nullable = false)
     private String password;
+
 
     private String email;
 

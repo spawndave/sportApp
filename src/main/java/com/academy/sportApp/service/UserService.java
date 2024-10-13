@@ -3,6 +3,7 @@ package com.academy.sportApp.service;
 import com.academy.sportApp.dto.NewUserDto;
 import com.academy.sportApp.dto.UserDto;
 import com.academy.sportApp.model.entity.Role;
+import com.academy.sportApp.model.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface UserService {
     UserDto getUserDtoById(Long id);
     void saveUser(NewUserDto user);
     List<Role> getRoles();
+    User getUserByUsername(String username);
+    void updateUserData(User user, String username);
 }

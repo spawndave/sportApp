@@ -50,7 +50,7 @@ public class TrainingController {
     public String saveTraining(Training training, Model model){
         trainingService.updateTraining(training);
         model.addAttribute("training", training);
-        return "redirect:training/" + training.getId();
+        return "redirect:/training/" + training.getId();
     }
 
     @GetMapping("/training-details/{participantId}")

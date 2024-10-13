@@ -114,10 +114,10 @@
                             th:field="${athlete.trainingSession.difficulty}"
                             id="difficulty"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option th:selected="${difficulty.value == 0}" th:value="${difficulty.DEFAULT}" th:text="@{Select difficulty}"></option>
-                        <option th:selected="${difficulty.value == 1}" th:value="${difficulty.EASY}" th:text="@{Easy}"></option>
-                        <option th:selected="${difficulty.value == 2}" th:value="${difficulty.NORMAL}" th:text="@{Normal}"></option>
-                        <option th:selected="${difficulty.value == 3}" th:value="${difficulty.HARD}" th:text="@{Hard}"></option>
+                        <option th:selected="${difficulty}" th:value="${athlete.trainingSession.difficulty.DEFAULT}" th:text="@{Select difficulty}"></option>
+                        <option th:selected="${difficulty}" th:value="${athlete.trainingSession.difficulty.EASY}" th:text="@{Easy}"></option>
+                        <option th:selected="${difficulty}" th:value="${athlete.trainingSession.difficulty.NORMAL}" th:text="@{Normal}"></option>
+                        <option th:selected="${difficulty}" th:value="${athlete.trainingSession.difficulty.HARD}" th:text="@{Hard}"></option>
                     </select>
                 </div>
 

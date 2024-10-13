@@ -32,7 +32,7 @@ public class TrainingSession extends ModifierOptions{
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate sessionDate;
 
-    @Column(name = "difficulty_level")
+    @Column(name = "difficulty_level", nullable = false)
     @Enumerated(EnumType.STRING)
     private TrainingDifficulty difficulty = TrainingDifficulty.DEFAULT;
 

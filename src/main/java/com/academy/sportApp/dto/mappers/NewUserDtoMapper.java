@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
@@ -34,7 +32,7 @@ public class NewUserDtoMapper implements Function<NewUserDto, User> {
         user.setEmail(userDto.getEmail());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());;
-        user.setDateOfBirth(LocalDate.parse(userDto.getDateOfBirth(), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+        user.setDateOfBirth(userDto.getDateOfBirth());
         return user;
     }
 }

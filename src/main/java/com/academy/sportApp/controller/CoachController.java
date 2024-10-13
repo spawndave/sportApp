@@ -35,6 +35,13 @@ public class CoachController {
         model.addAttribute("coach", coach);
         return "users/coach/info";
     }
+    @GetMapping("/{username}/training-journal")
+    public String getTrainingList(
+            @PathVariable("username") String username, Model model){
+        Coach coach = coachService.getCoachByUsername(username);
+        model.addAttribute("coach", coach);
+        return "users/coach/training-journal";
+    }
 
     @GetMapping("/{username}/add_athlete")
     public String addAthlete(
@@ -96,8 +103,6 @@ public class CoachController {
         Training training  = coachService.getCoachTrainingById( trainingId, coach );
         Set<AthleteWithCoach> athletes = coachService.getAllCoachAthletesNotInTraining(training);
 
-        //coachService.addTrainingPatricipant(training, athleteId);
-        //coachService.save(coach);
         model.addAttribute("coach", coach);
         model.addAttribute("training", training);
         model.addAttribute("athletes", athletes);
@@ -119,7 +124,6 @@ public class CoachController {
 
     @GetMapping("/{username}/remove_participant/{trainingId}")
     public String getParticipantsList(
-            @AuthenticationPrincipal Coach coach,
             @PathVariable("trainingId") Long trainingId,
             @PathVariable("username") String username,
             Model model){
@@ -130,27 +134,13 @@ public class CoachController {
 
     @GetMapping("/remove_participant/{trainingId}/{participantId}")
     public String getParticipantsList(
-            @AuthenticationPrincipal Coach coach,
             @PathVariable("trainingId") Long trainingId,
             @PathVariable("participantId") Long participantId,
             Model model){
-
         trainingService.removeParticipantFromTraining(trainingId, participantId);
-        model.addAttribute("training", trainingService.getTrainingById(trainingId));
-        return "redirect:/coach/" + coach.getUsername();
+        Training training = trainingService.getTrainingById(trainingId);
+        model.addAttribute("training", training);
+        return "redirect:/coach/" + training.getCoach().getUsername();
     }
 
-    @GetMapping("/edit/{id}")
-    public String editUser(
-            @PathVariable("id") Long id, Model model){
-        Coach coach = coachService.getCoachById(id);
-        model.addAttribute("coach", coach);
-        return "users/coach/edit";
-    }
-
-    @PostMapping("edit/{id}")
-    public String doEditUser(@PathVariable("id") Long id, User user, Model model){
-        Coach coach = coachService.getCoachById(id);
-        return "redirect:/coach/" + coach.getUsername();
-    }
 }

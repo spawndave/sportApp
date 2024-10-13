@@ -46,7 +46,7 @@
              class="text-indigo-500 hover:text-indigo-900"></a>
       </div>
       <div th:if="${isAdmin}">
-          <a th:href="@{/users/edit/{userName}}"
+          <a th:href="@{/users/edit/{userName}(userName=${userName})}"
              th:text="@{Edit}"
              class="text-indigo-500 hover:text-indigo-900"></a>
       </div>

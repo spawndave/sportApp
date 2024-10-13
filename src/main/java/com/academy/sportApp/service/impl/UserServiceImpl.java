@@ -8,8 +8,11 @@ import com.academy.sportApp.model.entity.*;
 import com.academy.sportApp.model.repository.*;
 import com.academy.sportApp.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +30,7 @@ public class UserServiceImpl implements UserService {
     private final NewUserDtoMapper newUserDtoMapper;
     private final AthleteSportRepository athleteSportRepository;
     private final CoachRepository coachRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDto> getUsers() {
@@ -67,6 +71,21 @@ public class UserServiceImpl implements UserService {
         return roleRepository.getRolesByIdAfter(1L);
     }
 
+    @Override
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public void updateUserData(User newUser, String username) {
+        User user = userRepository.findByUsername(username);
+        user.setFirstName(newUser.getFirstName());
+        user.setLastName(newUser.getLastName());
+        user.setEmail(newUser.getEmail());
+        user.setUsername(newUser.getUsername());
+        user.setUpdatedAt( LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        userRepository.save(user);
+    }
 
 
 }

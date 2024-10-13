@@ -42,7 +42,7 @@
                     <td th:replace="~{fragments/table :: data(contents=${#temporals.format(training.date, 'dd-MM-yyyy')})}"></td>
                     <td class="text-xs text-center  tracking-wide  text-cyan-500 py-1"
                         th:if="${loggedInUserId eq 2 or loggedInUserId eq training.coach.id}">
-                        <div class="py-1"><a href="#"> Edit training </a></div></td>
+                        <div class="py-1"><a th:href="@{/training/edit-training/{id}(id=${training.id})}"> Edit training </a></div></td>
                 </tr>
 
                 </tbody>
@@ -85,9 +85,11 @@
                                th:href="@{/training/training-details/{id}(id=${participant.id})}">
                             </a>
                         </div>
-                        <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
-
-                             th:text="${participant.status.description}">
+                        <div class="inline-flex items-center text-base font-semibold">
+                              <span th:if="${participant.status.value eq 1}"
+                                    th:text="${participant.status.description}" class="text-red-500"></span>
+                            <span th:if="${participant.status.value eq 2}"
+                                  th:text="${participant.status.description}" class="text-green-500"></span>
                         </div>
                     </div>
                 </li>

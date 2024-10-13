@@ -49,7 +49,7 @@
                                         <td th:replace="~{fragments/table :: data(contents=${user.role.name})}"></td>
                                         <td th:replace="~{fragments/table :: data(contents=${#temporals.format(user.dateOfBirth, 'dd-MM-yyyy')})}"></td>
                                         <td th:replace="~{fragments/table :: data(contents=${user.email})}"></td>
-                                        <td th:replace="~{fragments/table :: dataUserEditOrView(${adminPermission}, ${#strings.toLowerCase(user.role.name)},${user.username})}"></td>
+                                        <td th:replace="~{fragments/table :: dataUserEditOrView(${adminPermission or #authentication.principal.id eq user.id}, ${#strings.toLowerCase(user.role.name)}, ${user.username})}"></td>
                                     </tr>
                                 </tbody>
                             </table>
