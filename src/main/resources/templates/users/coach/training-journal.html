@@ -3,13 +3,13 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{layout/layout}"
-        th:with="activeMenuItem='activities'">
+        th:with="activeMenuItem='journal'">
 
         <head>
         <title>User Info</title>
 </head>
 <body>
-    <div layout:fragment="page-content" class="container px-6 py-4"
+    <div layout:fragment="page-content" class="container px-6 py-4 bg-white"
          th:with="loggedInUserId=${#authentication.principal.id}">
         <div th:if="${loggedInUserId eq 2 or loggedInUserId eq coach.id}">
 

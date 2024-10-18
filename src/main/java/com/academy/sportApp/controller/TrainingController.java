@@ -38,6 +38,13 @@ public class TrainingController {
         return "training/info";
     }
 
+    @GetMapping("/calendar")
+    public String registrationUser(
+            @AuthenticationPrincipal User user,
+            Model model){
+       // model.addAttribute("user", new NewUserDto());
+        return "training/calendar";
+    }
 
     @GetMapping("/edit-training/{id}")
     public String editTraining(@PathVariable("id")Long id, Model model){

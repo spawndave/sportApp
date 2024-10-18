@@ -1,12 +1,7 @@
 package com.academy.sportApp.service.impl;
 
-import com.academy.sportApp.model.entity.Athlete;
-import com.academy.sportApp.model.entity.AthleteWithCoach;
-import com.academy.sportApp.model.entity.TrainingParticipant;
-import com.academy.sportApp.model.repository.AthleteRepository;
-import com.academy.sportApp.model.repository.CoachAthleteSportRepository;
-import com.academy.sportApp.model.repository.TrainingParticipantRepository;
-import com.academy.sportApp.model.repository.UserRepository;
+import com.academy.sportApp.model.entity.*;
+import com.academy.sportApp.model.repository.*;
 import com.academy.sportApp.service.AthleteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +15,7 @@ public class AthleteServiceImpl implements AthleteService {
     private final UserRepository userRepository;
     private final TrainingParticipantRepository trainingParticipantRepository;
     private  final CoachAthleteSportRepository coachAthleteSportRepository;
+    private final TrainingRequestRepository trainingRequestRepository;
 
     @Override
     public List<Athlete> getAllAthletes() {
@@ -44,6 +40,14 @@ public class AthleteServiceImpl implements AthleteService {
     @Override
     public AthleteWithCoach getTrainingJournal(Long id) {
         return coachAthleteSportRepository.getReferenceById(id);
+    }
+
+    @Override
+    public void createTrainingRequest(Athlete athlete, Coach coach) {
+        TrainingRequest request = new TrainingRequest();
+        request.setCoach(coach);
+        request.setAthleteData(athlete);
+        trainingRequestRepository.save(request);
     }
 
     @Override

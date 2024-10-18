@@ -13,7 +13,7 @@
 
 <div layout:fragment="page-content"
      th:with="loggedInUserId=${#authentication.principal.id}"
-     class="container px-6 py-4">
+     class="container px-6 py-4 bg-white">
 
     <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 md:px-8">
         <h1 class="text-2xl font-semibold text-gray-900">Coach info
@@ -122,6 +122,41 @@
                         </tbody>
                     </table>
 
+                </div>
+
+                <div class="py-4" th:if="${coach.trainingRequests.size() > 0}">
+                    <h2 class="text-2xl font-semibold text-gray-900">Training requests
+                    </h2>
+                    <div class="flex flex-col">
+                        <div class="my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+                            <div class="my-2 align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
+
+                                <table class="w-full whitespace-no-wrap`">
+                                    <thead>
+                                    <tr class="py-2 text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                                        <th class="px-4 py-3 ">Sport</th>
+                                        <th class="px-4 py-3 ">Athlete</th>
+                                        <th class="px-4 py-3 ">Actions</th>
+                                    </tr>
+
+                                    </thead>
+                                    <tbody class="bg-white divide-y gray:divide-gray-700 ">
+                                    <tr th:each="request: ${coach.trainingRequests}" class="text-center text-gray-700 gray:text-gray-400 border-gray-300 ">
+                                        <td class="text-center" th:replace="~{fragments/table :: dataWithLink(${request.coach.sport.name},@{/sport/{name}(name=${request.coach.sport.name})})}"></td>
+                                        <td th:replace="~{fragments/table :: dataWithLink(${request.athleteData.firstName},@{/athlete/{username}(username=${request.athleteData.username})})}"></td>
+                                        <td class="px-4 py-3 text-center">
+                                          <a th:href="@{approve-training-request/{id}(id=${request.id})}" class="text-sm px-2 font-light font-medium  text-green-500">Approve</a>
+                                          <a th:href="@{reject-training-request/{id}(id=${request.id})}" class="text-sm px-2 font-light font-medium  text-red-500">Reject</a>
+
+                                        </td>
+
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

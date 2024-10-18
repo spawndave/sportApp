@@ -1,5 +1,6 @@
 package com.academy.sportApp.service;
 
+import com.academy.sportApp.dto.TrainingDto;
 import com.academy.sportApp.model.entity.Coach;
 import com.academy.sportApp.model.entity.Training;
 import com.academy.sportApp.model.entity.TrainingParticipant;
@@ -17,4 +18,5 @@ public interface TrainingService {
     void updateTraining(Training training);
     void updateTrainingData(TrainingParticipant participant, Long participantId);
     boolean isCurrUserTrainingParticipant(Training training, Long currUserId);
+    Training convertDtoTraining(TrainingDto trainingDto);
 }

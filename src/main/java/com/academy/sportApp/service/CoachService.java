@@ -1,5 +1,6 @@
 package com.academy.sportApp.service;
 
+import com.academy.sportApp.dto.TrainingDto;
 import com.academy.sportApp.model.entity.AthleteWithCoach;
 import com.academy.sportApp.model.entity.Coach;
 import com.academy.sportApp.model.entity.Training;
@@ -16,4 +17,8 @@ public interface CoachService {
     Training getCoachTrainingById(Long trainingId, Coach coach);
     Set<AthleteWithCoach> getAllCoachAthletesNotInTraining(Training training);
     void addAthleteForTrainings(Coach coach, Long athleteId);
+    void addTraining(Coach coach, TrainingDto trainingDto);
+    void addAthlete(Coach coach, Long id);
+    void rejectTrainingRequest(Long trainingRequestId);
+    void approveTrainingRequest(Long trainingRequestId);
 }

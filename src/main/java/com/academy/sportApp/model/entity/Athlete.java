@@ -25,6 +25,9 @@ public class Athlete extends User{
     @OneToMany(mappedBy = "athleteData")
     private Set<AthleteSport> allActivities;
 
+    @OneToMany(mappedBy = "athleteData")
+    private List<TrainingRequest> trainingRequests;
+
     @Transient
     private List<Sport> activitiesWithOutCoach;
 

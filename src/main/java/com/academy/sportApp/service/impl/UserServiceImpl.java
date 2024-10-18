@@ -4,6 +4,8 @@ import com.academy.sportApp.dto.NewUserDto;
 import com.academy.sportApp.dto.UserDto;
 import com.academy.sportApp.dto.mappers.NewUserDtoMapper;
 import com.academy.sportApp.dto.mappers.UserDtoMapper;
+import com.academy.sportApp.exceptions.UserNotUniqDataException;
+import com.academy.sportApp.exceptions.UserWithUsernameNotFoundException;
 import com.academy.sportApp.model.entity.*;
 import com.academy.sportApp.model.repository.*;
 import com.academy.sportApp.service.UserService;
@@ -77,14 +79,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserData(User newUser, String username) {
-        User user = userRepository.findByUsername(username);
+    public void updateUserData(UserDto newUser, String username) {
+        User user = userRepository.getUserByUsername(username)
+                .orElseThrow(() -> new UserWithUsernameNotFoundException(username));
         user.setFirstName(newUser.getFirstName());
         user.setLastName(newUser.getLastName());
         user.setEmail(newUser.getEmail());
+        if(!username.equals(newUser.getUsername()) &&  userRepository.getUserByUsername(newUser.getUsername()).isPresent()) {
+            throw new UserNotUniqDataException(username);
+        }else{
+            user.setUsername(newUser.getUsername());
+        }
         user.setUsername(newUser.getUsername());
         user.setUpdatedAt( LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
         userRepository.save(user);
+    }
+
+    @Override
+    public boolean userWithEmailExists(String email) {
+        return userRepository.findUserByEmail(email) != null;
+    }
+
+    @Override
+    public boolean userWithUsernameExists(String username) {
+        return userRepository.findByUsername(username) != null;
+    }
+
+    @Override
+    public UserDto getUserDtoByUsername(String username) {
+        User user = getUserByUsername(username);
+        return userDtoMapper.apply(user);
     }
 
 

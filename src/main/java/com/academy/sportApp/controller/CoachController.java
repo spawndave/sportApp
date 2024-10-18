@@ -1,18 +1,16 @@
 package com.academy.sportApp.controller;
 
+import com.academy.sportApp.dto.TrainingDto;
 import com.academy.sportApp.model.entity.*;
 import com.academy.sportApp.service.CoachService;
 import com.academy.sportApp.service.TrainingService;
-import com.academy.sportApp.service.UserService;
 import com.academy.sportApp.service.impl.AthleteServiceImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
@@ -23,7 +21,6 @@ import java.util.Set;
 public class CoachController {
 
     private final CoachService coachService;
-    private final UserService  userService;
     private final TrainingService trainingService;
     private final AthleteServiceImpl athleteService;
 
@@ -35,12 +32,33 @@ public class CoachController {
         model.addAttribute("coach", coach);
         return "users/coach/info";
     }
+
     @GetMapping("/{username}/training-journal")
     public String getTrainingList(
             @PathVariable("username") String username, Model model){
         Coach coach = coachService.getCoachByUsername(username);
         model.addAttribute("coach", coach);
         return "users/coach/training-journal";
+    }
+
+    @GetMapping("/{username}/approve-training-request/{id}")
+    public String approveAthleteRequest(
+            @AuthenticationPrincipal User loggedInUser,
+            @PathVariable("username") String username,
+            @PathVariable("id") Long id,
+            Model model){
+        coachService.approveTrainingRequest(id);
+        return "users/coach/info";
+    }
+
+    @GetMapping("/{username}/reject-training-request/{id}")
+    public String rejectAthleteRequest(
+            @AuthenticationPrincipal User loggedInUser,
+            @PathVariable("username") String username,
+            @PathVariable("id") Long id,
+            Model model){
+        coachService.rejectTrainingRequest(id);
+        return "users/coach/info";
     }
 
     @GetMapping("/{username}/add_athlete")
@@ -59,13 +77,7 @@ public class CoachController {
             @PathVariable("id") Long id,
             Model model){
         Coach coach = coachService.getCoachByUsername(username);
-        AthleteWithCoach athlete = new AthleteWithCoach();
-        Athlete athleteData = athleteService.getAthleteById(id);
-        athlete.setCoach(coach);
-        athlete.setAthleteData(athleteData);
-        athlete.setSport(coach.getSport());
-        coachService.saveAthlete(athlete);
-        coach.getAthletes().add(athlete);
+        coachService.addAthlete(coach, id);
         model.addAttribute("user", coach);
         return "redirect:/coach/" + coach.getUsername();
     }
@@ -76,22 +88,21 @@ public class CoachController {
             Model model){
         Coach coach = coachService.getCoachByUsername(username);
         model.addAttribute("coach", coach);
-        model.addAttribute("training", new Training());
+        model.addAttribute("training", new TrainingDto());
         return "users/coach/add-training";
     }
 
     @PostMapping("/{username}/add_training")
     public String addTraining(
             @PathVariable("username") String username,
-            Model model, Training training){
+            Model model,
+            @Valid @ModelAttribute("training") TrainingDto trainingDto){
         Coach coach = coachService.getCoachByUsername(username);
-        coach.getTrainings().add(training);
-        training.setSport(coach.getSport());
-        training.setCoach(coach);
-        coachService.save(coach);
+        coachService.addTraining(coach, trainingDto);
         model.addAttribute("coach", coach);
         return "redirect:/coach/" + coach.getUsername();
     }
+
     @GetMapping("/{username}/add_participant/{training_id}")
     public String getListCoachAthletesNotInTraining(
             @PathVariable("username") String username,
@@ -102,7 +113,6 @@ public class CoachController {
         Coach coach = coachService.getCoachByUsername(username);
         Training training  = coachService.getCoachTrainingById( trainingId, coach );
         Set<AthleteWithCoach> athletes = coachService.getAllCoachAthletesNotInTraining(training);
-
         model.addAttribute("coach", coach);
         model.addAttribute("training", training);
         model.addAttribute("athletes", athletes);

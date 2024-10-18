@@ -12,7 +12,7 @@
 <body>
         <div layout:fragment="page-content"
              th:with="loggedInUserId=${#authentication.principal.id}"
-             class="container px-6 py-4">
+             class="container px-6 py-4 rounded-b bg-white">
             <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 md:px-8">
                 <h1 class="text-2xl font-semibold text-gray-900">Athlete info
                 </h1>
@@ -48,7 +48,7 @@
                     </h2>
                     <div th:replace="~{fragments/titles :: buttonLink(@{Add activity}, ${athlete.username}+'/add-activity')}"></div>
                 </div>
-                <div class="py-4" th:each="activity: ${athlete.activitiesWithCoach}">
+                <div class="py-4" >
                     <div class="flex flex-col">
                         <div class="my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                             <div class="my-2 align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
@@ -63,7 +63,7 @@
 
                                     </thead>
                                     <tbody class="bg-white divide-y gray:divide-gray-700 ">
-                                    <tr class="text-center text-gray-700 gray:text-gray-400 border-gray-300 ">
+                                    <tr th:each="activity: ${athlete.activitiesWithCoach}" class="text-center text-gray-700 gray:text-gray-400 border-gray-300 ">
                                         <td class="text-center" th:replace="~{fragments/table :: dataWithLink(${activity.sport.name},@{/sport/{name}(name=${activity.sport.name})})}"></td>
                                         <td th:replace="~{fragments/table :: dataWithLink(${activity.coach.firstName},@{/coach/{username}(username=${activity.coach.username})})}"></td>
                                         <td th:replace="~{fragments/table :: dataWithLink(${activity.trainings.size()},@{/athlete/{username}/training-journal/{id}
@@ -78,11 +78,43 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="py-4" th:if="${athlete.trainingRequests.size() > 0}">
+                    <h2 class="text-2xl font-semibold text-gray-900">Training requests
+                    </h2>
+                    <div class="flex flex-col">
+                        <div class="my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+                            <div class="my-2 align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
+
+                                <table class="w-full whitespace-no-wrap`">
+                                    <thead>
+                                    <tr class="py-2 text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                                        <th class="px-4 py-3 ">Sport</th>
+                                        <th class="px-4 py-3 ">Coach</th>
+                                        <th class="px-4 py-3 ">Status</th>
+                                    </tr>
+
+                                    </thead>
+                                    <tbody class="bg-white divide-y gray:divide-gray-700 ">
+                                    <tr th:each="request: ${athlete.trainingRequests}" class="text-center text-gray-700 gray:text-gray-400 border-gray-300 ">
+                                        <td class="text-center" th:replace="~{fragments/table :: dataWithLink(${request.coach.sport.name},@{/sport/{name}(name=${request.coach.sport.name})})}"></td>
+                                        <td th:replace="~{fragments/table :: dataWithLink(${request.coach.firstName},@{/coach/{username}(username=${request.coach.username})})}"></td>
+                                        <td class="px-4 py-3 text-center">Is being considered</td>
+
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="max-w-7xl mx-auto px-4 py-1 sm:px-6 md:px-8 flex flex-row justify-between">
                     <h2 class="text-2xl font-semibold text-gray-900">Activities without coach
                     </h2>
                 </div>
-                <div class="py-2" th:each="activity: ${athlete.activitiesWithOutCoach}">
+                <div class="py-2" >
 
                     <div class="flex flex-col">
                         <div class="my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -93,20 +125,40 @@
                                     <tr class="py-2 text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
                                         <th class="px-4 py-3 ">Sport</th>
                                         <th class="px-4 py-3 ">Coaches</th>
-                                        <th class="px-4 py-3 "></th>
+                                        <th class="px-4 py-3 ">Add selected coach</th>
                                     </tr>
 
                                     </thead>
                                     <tbody class="bg-white divide-y gray:divide-gray-700 ">
-                                    <tr class="text-center text-gray-700 gray:text-gray-400 border-gray-300 ">
+                                    <tr th:each="activity: ${athlete.activitiesWithOutCoach}"
+                                        class="text-center text-gray-700 gray:text-gray-400 border-gray-300 ">
                                         <td class="text-center" th:replace="~{fragments/table :: dataWithLink(${activity.name},@{/sport/{name}(name=${activity.name})})}"></td>
                                         <td class="flex flex-row align-middle text-sm leading-5 text-cyan-500 text-center center">
-                                            <label for="coaches" class="text-center py-3 px-2 text-sm font-medium text-gray-900 dark:text-white" >Coach:</label>
-                                            <select th:each="coach: ${activity.coaches}" id="coaches" class="my-2 w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                                                <option  th:value="${coach.id}" th:text="${coach.firstName}"></option>
+                                            <select  th:onchange="'selectCoach(this, '+${activity.id}+')'"
+                                                    id="coaches" class="my-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-cyan-500 focus:border-cyan-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                                                <option value="">Choose appropriate coach</option>
+                                                <option
+                                                        th:each="coach: ${activity.coaches}"
+                                                        th:value="${coach.id}"
+                                                        th:text="${coach.firstName}"
+                                                        ></option>
                                             </select>
                                         </td>
-                                        <td class="text-center text-amber-700" th:replace="~{fragments/table :: dataWithLink(@{Send request for training},@{/sport/{name}(name=${activity.name})})}"></td>
+
+                                            <td class="text-center">
+                                                <a th:id="@{activity-{id}(id=${activity.id})}" href=""
+                                                   class="font-medium  text-gray-500"
+                                                   th:text="@{Send request for training}"
+                                                   th:if="${activity.coaches.size() eq 0}"
+                                                ></a>
+                                                <a th:id="@{activity-{id}(id=${activity.id})}" href=""
+                                                   class="font-medium  "
+                                                   th:text="@{Send request for training}"
+                                                   th:if="${activity.coaches.size() > 0}"
+                                                   th:classappend="text-cyan-500"
+                                                ></a>
+                                            </td>
+
 
                                     </tr>
 
@@ -117,7 +169,12 @@
                     </div>
                 </div>
             </div>
-
+            <script>
+                function selectCoach(el, id)
+                {
+                    document.getElementById("activity-"+id).href="/athlete/send-request/"+ el.value;
+                }
+            </script>
     </div>
 </body>
 </html>

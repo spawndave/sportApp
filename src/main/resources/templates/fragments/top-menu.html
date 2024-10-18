@@ -2,62 +2,63 @@
         xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
         xmlns:th="http://www.thymeleaf.org" xmlns:x-transition="http://www.w3.org/1999/xhtml">
 <div th:fragment="menu"
-     class=" z-10 py-4 bg-white  shadow-md ">
-    <button type="button"
-            class=" border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 lg:hidden"
-            @click.stop="openSidebar">
-        <span class="sr-only">Open sidebar</span>
-        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-             aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/>
-        </svg>
-    </button>
+     class=" z-10 container px-6 mx-auto  py-4 bg-white  rounded-t">
+
     <div class="flex flex-1 justify-between px-4">
-        <div class="flex flex-1">
-        </div>
-        <div class="ml-4 flex items-center lg:ml-6">
-            <!-- Profile dropdown -->
-            <div sec:authorize="isAuthenticated()"
-                    class="relative ml-3"
-                 x-data="userMenu()"
-                 @click.away="close"
-                 @keydown.window.escape="close">
-                <div>
-                    <button type="button"
-                            class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            id="user-menu-button" aria-expanded="false" aria-haspopup="true"
-                            @click="toggleVisibility()">
-                        <span th:text="${#strings.toLowerCase(#authentication.principal.role.name)}"
-                              class="block px-2 py-2 text-sm text-gray-700"
-                        ></span>
-                        <span sec:authentication="name"></span>
+            <div class="flex flex-1 justify-center" sec:authorize="isAuthenticated()">
+                <a href="/users" class="mx-auto "
+                   th:classappend="${activeMenuItem == 'dashboard'?'text-cyan-500' : 'text-gray-700'}">Home</a>
+                <a href="/sport" class="mx-auto"
+                   th:classappend="${activeMenuItem == 'activities'?'text-cyan-500' : 'text-gray-700'}">Activities</a>
+                <a href="#" class="mx-auto ">Training calendar</a>
+                <a
+                    th:href="${'/'+#strings.toLowerCase(#authentication.principal.role.name)
+                       + '/' + #authentication.principal.username +'/training-journal'}"
+                   class="mx-auto "
+                    th:classappend="${activeMenuItem == 'journal'?'text-cyan-500' : 'text-gray-700'}">Training journal</a>
+            </div>
+            <div class="ml-4 flex items-center lg:ml-6">
+                <!-- Profile dropdown -->
+                <div sec:authorize="isAuthenticated()"
+                        class="relative ml-3"
+                     x-data="userMenu()"
+                     @click.away="close"
+                     @keydown.window.escape="close">
+                    <div>
+                        <button type="button"
+                                class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                id="user-menu-button" aria-expanded="false" aria-haspopup="true"
+                                @click="toggleVisibility()">
+                            <span th:text="${#strings.toLowerCase(#authentication.principal.role.name)}"
+                                  class="block px-2 py-2 text-sm text-gray-700"
+                            ></span>
+                            <span sec:authentication="name"></span>
 
-                    </button>
-                </div>
+                        </button>
+                    </div>
 
-                <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                     role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"
-                     x-show="isVisible()"
-                     x-cloak
-                     x-transition:enter="transition ease-out duration-100 transform"
-                     x-transition:enter-start="opacity-0 scale-95"
-                     x-transition:enter-end="opacity-100 scale-100"
-                     x-transition:leave="transition ease-in duration-75 transform"
-                     x-transition:leave-start="opacity-100 scale-100"
-                     x-transition:leave-end="opacity-0 scale-95">
-                    <!-- Active: "bg-gray-100", Not Active: "${#authentication.principal.id" -->
+                    <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                         role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1"
+                         x-show="isVisible()"
+                         x-cloak
+                         x-transition:enter="transition ease-out duration-100 transform"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-75 transform"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95">
+                        <!-- Active: "bg-gray-100", Not Active: "${#authentication.principal.id" -->
 
-                    <a th:href="${'/'+#strings.toLowerCase(#authentication.principal.role.name)
-                    + '/' + #authentication.principal.username}"
-                       class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                       id="user-menu-item-0">Your Profile</a>
+                        <a th:href="${'/'+#strings.toLowerCase(#authentication.principal.role.name)
+                        + '/' + #authentication.principal.username}"
+                           class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                           id="user-menu-item-0">Your Profile</a>
 
-                    <a href="/logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
-                       id="user-menu-item-2">Sign out</a>
+                        <a href="/logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"
+                           id="user-menu-item-2">Sign out</a>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>
 </div>
 

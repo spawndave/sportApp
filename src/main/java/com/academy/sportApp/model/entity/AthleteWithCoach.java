@@ -28,10 +28,12 @@ public class AthleteWithCoach {
 
     @OneToMany(mappedBy = "athlete",
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<TrainingParticipant> trainings;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "coach_id")
     private Coach coach;
 

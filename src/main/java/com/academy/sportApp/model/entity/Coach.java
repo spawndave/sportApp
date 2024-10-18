@@ -26,13 +26,16 @@ public class Coach extends User{
     private Sport sport;
 
     @OneToMany(mappedBy = "coach",  fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @ToString.Exclude List<Training> trainings;
+    @ToString.Exclude private List<Training> trainings;
 
 
     @OneToMany(mappedBy = "coach",
             fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
     @ToString.Exclude private Set<AthleteWithCoach> athletes;
+
+    @OneToMany(mappedBy = "coach",  fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ToString.Exclude private List<TrainingRequest> trainingRequests;
 
 
 }

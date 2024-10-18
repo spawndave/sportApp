@@ -1,12 +1,10 @@
 package com.academy.sportApp.controller;
 
-import com.academy.sportApp.dto.NewUserDto;
 import com.academy.sportApp.dto.UserDto;
+import com.academy.sportApp.exceptions.UserNotUniqDataException;
 import com.academy.sportApp.model.entity.User;
-import com.academy.sportApp.service.ActivityService;
 import com.academy.sportApp.service.UserService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final ActivityService activityService;
 
 
 
@@ -39,48 +36,33 @@ public class UserController {
         return "users/athlete/info";
     }
 
-
-    @GetMapping("/registration")
-    public String registrationUser(Model model){
-        model.addAttribute("roles", userService.getRoles());
-        model.addAttribute("activities", activityService.getActivities());
-        model.addAttribute("user", new NewUserDto());
-        return "users/registration";
-    }
-
-
-    @PostMapping("/registration")
-    public String registrationAthlete(
-            @NotNull
-            @Valid @ModelAttribute("user") NewUserDto formData,
-            BindingResult bindingResult,
-             Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("firstname", "asadasdasd");
-            model.addAttribute("roles", userService.getRoles());
-            model.addAttribute("activities", activityService.getActivities());
-            model.addAttribute("user", formData);
-            return "users/registration";
-        }
-        userService.saveUser(formData);
-        return "redirect:/users";
-    }
-
     @GetMapping("/edit/{username}")
     public String editUser(
             @AuthenticationPrincipal User loggedInUser,
-            @PathVariable("username") String username, Model model){
-        User user = userService.getUserByUsername(username);
-        model.addAttribute("user", user);
+            @PathVariable("username") String username,
+            Model model){
+        UserDto userDto = userService.getUserDtoByUsername(username);
+        model.addAttribute("user", userDto);
         return "users/edit";
     }
 
     @PostMapping("edit/{username}")
     public String doEditUser(
+            @AuthenticationPrincipal User loggedInUser,
             @PathVariable("username") String username,
-            User user, Model model){
-        userService.updateUserData(user, username);
-        return "redirect:/users/";
+            @Valid @ModelAttribute("user") UserDto userDto,
+            BindingResult bindingResult,
+            Model model){
+        try{
+            userService.updateUserData(userDto, loggedInUser.getUsername());
+        }catch(UserNotUniqDataException exception){
+            bindingResult.rejectValue("username", "error", "This username is already exist.");
+        }
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userDto);
+            return "users/edit";
+        }
+        return "redirect:/users";
     }
 
 

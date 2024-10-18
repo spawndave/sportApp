@@ -16,13 +16,8 @@
                 <h1 class="text-2xl font-semibold text-gray-900">Users</h1>
             </div>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                <div class="py-4">
-                    <ul class="ml-4">
-                        <li th:each="user : ${users}" class="list-disc">
-                            <span th:text="${user.firstName}"></span>
-                        </li>
-                    </ul>
-                </div>
+                <a href="/registration" class="font-medium  text-cyan-500">Login</a>
+                <a href="/registration" class="font-medium  text-cyan-500">Sign up</a>
             </div>
 
         </div>

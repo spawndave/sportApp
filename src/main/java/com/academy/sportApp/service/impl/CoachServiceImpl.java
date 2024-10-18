@@ -1,10 +1,10 @@
 package com.academy.sportApp.service.impl;
 
-import com.academy.sportApp.model.entity.AthleteWithCoach;
-import com.academy.sportApp.model.entity.Coach;
-import com.academy.sportApp.model.entity.Training;
+import com.academy.sportApp.dto.TrainingDto;
+import com.academy.sportApp.model.entity.*;
 import com.academy.sportApp.model.repository.CoachAthleteSportRepository;
 import com.academy.sportApp.model.repository.CoachRepository;
+import com.academy.sportApp.model.repository.TrainingRequestRepository;
 import com.academy.sportApp.service.AthleteService;
 import com.academy.sportApp.service.CoachService;
 import com.academy.sportApp.service.TrainingService;
@@ -22,6 +22,7 @@ public class CoachServiceImpl implements CoachService {
     private final CoachAthleteSportRepository athleteCoachRepository;
     private final TrainingService trainingService;
     private final AthleteService athleteService;
+    private final TrainingRequestRepository trainingRequestRepository;
 
     @Override
     public List<Coach> getAllCoaches() {
@@ -75,6 +76,39 @@ public class CoachServiceImpl implements CoachService {
                 .build();
         saveAthlete(athlete);
         coach.getAthletes().add(athlete);
+    }
+
+    @Override
+    public void addTraining(Coach coach, TrainingDto trainingDto) {
+        Training training = trainingService.convertDtoTraining(trainingDto);
+        coach.getTrainings().add(training);
+        training.setSport(coach.getSport());
+        training.setCoach(coach);
+        save(coach);
+    }
+
+    @Override
+    public void addAthlete(Coach coach, Long id) {
+        AthleteWithCoach athlete = new AthleteWithCoach();
+        Athlete athleteData = athleteService.getAthleteById(id);
+        athlete.setCoach(coach);
+        athlete.setAthleteData(athleteData);
+        athlete.setSport(coach.getSport());
+        saveAthlete(athlete);
+        coach.getAthletes().add(athlete);
+    }
+
+    @Override
+    public void rejectTrainingRequest(Long trgRequestId) {
+        TrainingRequest trgRequest = trainingRequestRepository.getReferenceById(trgRequestId);
+        trainingRequestRepository.delete(trgRequest);
+    }
+
+    @Override
+    public void approveTrainingRequest(Long trgRequestId) {
+        TrainingRequest trgRequest = trainingRequestRepository.getReferenceById(trgRequestId);
+        addAthleteForTrainings(trgRequest.getCoach(), trgRequest.getAthleteData().getId());
+        trainingRequestRepository.delete(trgRequest);
     }
 
 }

@@ -6,6 +6,7 @@ import com.academy.sportApp.service.AthleteService;
 import com.academy.sportApp.service.CoachService;
 import com.academy.sportApp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,5 +85,15 @@ public class AthleteController {
     public String doEditUser(@PathVariable("id") Long id, User user, Model model){
         Coach coach = coachService.getCoachById(id);
         return "redirect:/coach/" + coach.getUsername();
+    }
+
+    @GetMapping("/send-request/{id}")
+    public String sendRequest(
+            @AuthenticationPrincipal Athlete athlete,
+            @PathVariable("id") Long id, Model model){
+        Coach coach = coachService.getCoachById(id);
+        athleteService.createTrainingRequest(athlete, coach);
+        model.addAttribute("coach", coach);
+        return "redirect:/athlete/"+ athlete.getUsername();
     }
 }

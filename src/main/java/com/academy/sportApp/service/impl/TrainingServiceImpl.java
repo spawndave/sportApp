@@ -1,5 +1,6 @@
 package com.academy.sportApp.service.impl;
 
+import com.academy.sportApp.dto.TrainingDto;
 import com.academy.sportApp.model.entity.*;
 import com.academy.sportApp.model.enums.TrainingDifficulty;
 import com.academy.sportApp.model.enums.TrainingStatus;
@@ -93,6 +94,16 @@ public class TrainingServiceImpl implements TrainingService {
         Set<TrainingParticipant> set =  training.getParticipants().stream()
                 .filter(part-> part.getAthleteData().getId() == currUserId).collect(Collectors.toSet());
         return set.size() > 0;
+    }
+
+    @Override
+    public Training convertDtoTraining(TrainingDto trainingDto) {
+        Training training = new Training();
+        training.setName(trainingDto.getName());
+        training.setDescription(trainingDto.getDescription());
+        training.setLocation(training.getLocation());
+        training.setDate(trainingDto.getDate());
+        return training;
     }
 
     public List<TrainingParticipant> getTrainingsByAthleteIdAndCoachId(Athlete athleteData, Coach coach) {

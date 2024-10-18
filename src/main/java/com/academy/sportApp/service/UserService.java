@@ -16,5 +16,8 @@ public interface UserService {
     void saveUser(NewUserDto user);
     List<Role> getRoles();
     User getUserByUsername(String username);
-    void updateUserData(User user, String username);
+    void updateUserData(UserDto user, String username);
+    boolean userWithEmailExists(String email);
+    boolean userWithUsernameExists(String username);
+    UserDto getUserDtoByUsername(String username);
 }

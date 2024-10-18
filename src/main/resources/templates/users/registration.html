@@ -23,7 +23,7 @@
             <form id="user-form"
                   class="container mx-auto"
                   th:object="${user}"
-                  th:action="@{/users/registration}"
+                  th:action="@{/registration}"
                   method="post">
 
                 <div class="mt-6 grid grid-cols-2 gap-y-6 gap-x-4 sm:grid-cols-4">
@@ -37,7 +37,7 @@
                                 <input th:field="*{role}"
                                        th:value="${role.id}"
                                        th:id="${role.name}"
-                                       class="mx-4 mr-1 focus:ring-green-500 h-4 w-4 text-green-500 border-gray-300 "
+                                       class="mx-4 mr-1 focus:ring-cyan-500 h-4 w-4 text-cyan-500 border-gray-300 "
                                        type="radio"  />
                                 <label th:for="${role.name}"
                                        th:text="${#strings.capitalize(role.name)}"></label>
@@ -56,7 +56,7 @@
                                     </span>
                         <select
                                 th:field="*{sport}"
-                                class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500">
+                                class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500">
                             <option
                                     th:each="activity : ${activities}"
                                     th:value="${activity.id}"
@@ -76,7 +76,7 @@
                                    type="text"
                                    th:field="*{firstName}"
                                    class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
-                                   th:classappend="${#fields.hasErrors('firstName')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+                                   th:classappend="${#fields.hasErrors('firstName')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-cyan-500 focus:border-cyan-500'}">
                             <div th:if="${#fields.hasErrors('firstName')}"
                                  class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
@@ -102,7 +102,7 @@
                                    type="text"
                                    th:field="*{lastName}"
                                    class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
-                                   th:classappend="${#fields.hasErrors('lastName')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+                                   th:classappend="${#fields.hasErrors('lastName')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-cyan-500 focus:border-cyan-500'}">
                             <div th:if="${#fields.hasErrors('lastName')}"
                                  class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
@@ -128,7 +128,7 @@
                                    type="email"
                                    th:field="*{email}"
                                    class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
-                                   th:classappend="${#fields.hasErrors('email')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+                                   th:classappend="${#fields.hasErrors('email')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-cyan-500 focus:border-cyan-500'}">
                             <div th:if="${#fields.hasErrors('email')}"
                                  class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
@@ -153,7 +153,7 @@
                                    type="text"
                                    th:field="*{username}"
                                    class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
-                                   th:classappend="${#fields.hasErrors('username')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+                                   th:classappend="${#fields.hasErrors('username')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-cyan-500 focus:border-cyan-500'}">
                             <div th:if="${#fields.hasErrors('username')}"
                                  class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
@@ -163,7 +163,9 @@
                                 </svg>
                             </div>
                         </div>
-
+                        <p th:if="${#fields.hasErrors('username')}"
+                           th:text="${#strings.listJoin(#fields.errors('username'), ', ')}"
+                           class="mt-2 text-sm text-red-600" id="username-error">Username validation error message(s).</p>
                     </div>
                     <!-- tag::birthday[] -->
                     <div class="sm:col-span-2 px-4">
@@ -182,7 +184,7 @@
                                    placeholder="Select date"
                                    th:field="*{dateOfBirth}"
                                    th:type="text"
-                                   th:classappend="${#fields.hasErrors('dateOfBirth')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+                                   th:classappend="${#fields.hasErrors('dateOfBirth')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-cyan-500 focus:border-cyan-500'}">
 
 
                             <div th:if="${#fields.hasErrors('dateOfBirth')}"
@@ -211,7 +213,7 @@
                                    type="password"
                                    th:field="*{password}"
                                    class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
-                                   th:classappend="${#fields.hasErrors('password')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+                                   th:classappend="${#fields.hasErrors('password')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-cyan-500 focus:border-cyan-500'}">
                             <div th:if="${#fields.hasErrors('password')}"
                                  class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                                 <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
@@ -233,14 +235,14 @@
                     <div class="flex justify-end">
                           <span class="inline-flex rounded-md shadow-sm">
                             <button type="button"
-                                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
                                     th:text="#{cancel}">
                               Cancel
                             </button>
                           </span>
                         <span class="ml-3 inline-flex rounded-md shadow-sm">
                                 <button type="submit"
-                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-cyan-500 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
                                         th:text="#{save}">
                                   Save
                                 </button>
