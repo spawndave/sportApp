@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/layout}"
+        th:with="activeMenuItem ='dashboard'">
+
+<head>
+    <title>Users</title>
+</head>
+<body>
+    <div layout:fragment="page-content" class="container px-6 py-4 bg-white">
+
+        <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
+            <table class="w-full whitespace-no-wrap`">
+                <thead>
+
+                <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                    <th th:replace="~{fragments/table :: header(#{user.name})}"></th>
+                    <th th:replace="~{fragments/table :: header(title=#{user.birthday}, hideOnMobile=true)}"></th>
+                    <th th:replace="~{fragments/table :: header(title=#{user.email}, hideOnMobile=true)}"></th>
+                    <th th:replace="~{fragments/table :: header(title=@{Sport}, hideOnMobile=true)}"></th>
+                    <th>Actions</th>
+                </tr>
+
+                </thead>
+                <tbody class="bg-white divide-y gray:divide-gray-700 ">
+
+                <tr class="text-gray-700 gray:text-gray-400 border-gray-300 " th:each="athlete : ${athletes}">
+                    <td th:replace="~{fragments/table :: dataWithLink(${athlete.firstName},@{/users/athlete/{id}(id=${athlete.id})})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${athlete.dateOfBirth})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${athlete.email})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${athlete.username})}"></td>
+                    <td class="text-xs text-center  tracking-wide  text-cyan-500 py-1">
+                        <div class="py-1"><a th:href="@{add_athlete/{id}(id=${athlete.id})}">Add this athlete</a> </div>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

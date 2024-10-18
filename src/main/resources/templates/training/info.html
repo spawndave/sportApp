@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/layout}"
+        th:with="activeMenuItem='dashboard'">
+
+<head>
+    <title>Training Info</title>
+</head>
+<body>
+<div layout:fragment="page-content"
+     th:with="loggedInUserId=${#authentication.principal.id}"
+     class="container px-6 py-4">
+<div th:if="${loggedInUserId eq 2 or loggedInUserId eq training.coach.id or isParticipant}">
+    <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 md:px-8">
+        <h1 class="text-2xl font-semibold text-gray-900">Training info
+        </h1>
+    </div>
+
+    <div class="py-4">
+        <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
+            <table class="w-full whitespace-no-wrap`">
+                <thead>
+                <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                    <th th:replace="~{fragments/table :: header(#{training.name})}"></th>
+                    <th th:replace="~{fragments/table :: header(title=#{training.description}, hideOnMobile=true)}"></th>
+                    <th th:replace="~{fragments/table :: header(title=@{Coach}, hideOnMobile=true)}"></th>
+                    <th th:replace="~{fragments/table :: header(title=#{training.location }, hideOnMobile=true)}"></th>
+                    <th th:replace="~{fragments/table :: header(title=#{training.date}, hideOnMobile=true)}"></th>
+                    <th>Actions</th>
+                </tr>
+
+                </thead>
+                <tbody class="bg-white divide-y gray:divide-gray-700 ">
+                <tr class="text-gray-700 gray:text-gray-400 border-gray-300 ">
+                    <td th:replace="~{fragments/table :: dataWithLink(${training.name},@{/training/{id}(id=${training.id})})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${training.description})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${training.coach.firstName +'' + training.coach.lastName})}"></td>
+
+                    <td th:replace="~{fragments/table :: data(contents=${training.location})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${#temporals.format(training.date, 'dd-MM-yyyy')})}"></td>
+                    <td class="text-xs text-center  tracking-wide  text-cyan-500 py-1"
+                        th:if="${loggedInUserId eq 2 or loggedInUserId eq training.coach.id}">
+                        <div class="py-1"><a th:href="@{/training/edit-training/{id}(id=${training.id})}"> Edit training </a></div></td>
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+    <div class="w-full max-w-7xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div class="flex items-center justify-between mb-4">
+            <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Participants</h5>
+            <p class="text-sm font-medium text-blue-800 hover:underline dark:text-blue-500">
+                Training Status
+            </p>
+        </div>
+        <div class="flow-root">
+            <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+
+                <li class="py-3 sm:py-4"
+                    th:each="participant: ${training.participants}">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <img class="w-8 h-8 rounded-full" src="" alt="image">
+                        </div>
+                        <div class="flex-1 min-w-0 ms-4 text-center">
+                            <a href="#" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
+                               th:text="${participant.athlete.athleteData.firstName}">Name
+                            </a>
+
+                            <p class="text-sm text-gray-500 truncate dark:text-gray-400"
+                               th:text="${participant.athlete.athleteData.email}">
+                                email
+                            </p>
+                        </div>
+                        <div  th:if="${loggedInUserId eq 2 or loggedInUserId eq training.coach.id or loggedInUserId eq participant.athlete.athleteData.id}"
+                                class="flex-1 min-w-0 ms-4 text-center">
+                            <a href="#" class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500"
+                               th:text="@{Training Details}"
+                               th:href="@{/training/training-details/{id}(id=${participant.id})}">
+                            </a>
+                        </div>
+                        <div class="inline-flex items-center text-base font-semibold">
+                              <span th:if="${participant.status.value eq 1}"
+                                    th:text="${participant.status.description}" class="text-red-500"></span>
+                            <span th:if="${participant.status.value eq 2}"
+                                  th:text="${participant.status.description}" class="text-green-500"></span>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+    <div th:if="${loggedInUserId != 2 and loggedInUserId != training.coach.id and !isParticipant}">
+        <div class="text-gray-500">
+            <p th:text="@{Sorry you dont have permission to see this page}" class="mb-6"></p>
+            <a th:href="@{/}" class="flex items-center text-sm text-cyan-500 hover:text-green-900">
+                <svg viewBox="0 0 20 20" fill="currentColor"
+                     class="w-4 h-4 mr-2">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                          clip-rule="evenodd"></path>
+                </svg>
+                <span th:text="@{Back to home page}">Back to home page</span>
+            </a>
+        </div>
+    </div>
+
+
+
+</div>
+</body>
+</html>

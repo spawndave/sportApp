@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/layout}"
+        th:with="activeMenuItem='dashboard'">
+
+<head>
+    <title>Registration</title>
+</head>
+<body>
+<div layout:fragment="page-content"
+     th:with="loggedInUserId=${#authentication.principal.id}"
+     class="container px-6 py-4 bg-white">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <h1 class="text-2xl font-semibold text-gray-900">Edit User
+        </h1>
+    </div>
+
+        <div class="py-4"
+             th:if="${loggedInUserId eq 2 or loggedInUserId eq user.id}"
+        >
+
+            <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+                <form id="user-form"
+                      class="container mx-auto"
+                      th:object="${user}"
+                      th:action="@{/users/edit/{username}(username=${user.username})}"
+                      method="post">
+
+                        <div class="mt-6 grid grid-cols-2 gap-y-6 gap-x-4 sm:grid-cols-4">
+                            <!-- tag::role[] -->
+                            <div class="sm:col-span-2 px-4">
+                                <span class="block  text-sm font-medium text-gray-700 dark:text-gray-400">
+                                        Role in sport: <span th:text="${user.role.name}"></span>
+                                    <input type="hidden" th:field="*{role}" th:value="${user.role.id}" >
+                                </span>
+                            </div>
+
+                            <div class="sm:col-span-2 px-4">
+                                <label for="firstName" class="block text-sm font-medium text-gray-700"
+                                       th:text="#{user.firstName}">
+                                    First name
+                                </label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input id="firstName"
+                                           type="text"
+                                           th:field="*{firstName}"
+                                           class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
+                                           th:classappend="${#fields.hasErrors('firstName')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+                                    <div th:if="${#fields.hasErrors('firstName')}"
+                                         class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p th:if="${#fields.hasErrors('firstName')}"
+                                   th:text="${#strings.listJoin(#fields.errors('firstName'), ', ')}"
+                                   class="mt-2 text-sm text-red-600" id="firstName-error">First name validation error message(s).</p>
+
+                            </div>
+
+                            <div class="sm:col-span-2 px-4">
+                                <label for="lastName" class="block text-sm font-medium text-gray-700"
+                                       th:text="#{user.lastName}">
+                                    Last name
+                                </label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input id="lastName"
+                                           type="text"
+                                           th:field="*{lastName}"
+                                           class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
+                                           th:classappend="${#fields.hasErrors('lastName')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+                                    <div th:if="${#fields.hasErrors('lastName')}"
+                                         class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p th:if="${#fields.hasErrors('lastName')}"
+                                   th:text="${#strings.listJoin(#fields.errors('lastName'), ', ')}"
+                                   class="mt-2 text-sm text-red-600" id="lastName-error">Last name validation error message(s).</p>
+
+                            </div>
+
+                            <div class="sm:col-span-2 px-4">
+                                <label for="email" class="block text-sm font-medium leading-5 text-gray-700"
+                                       th:text="#{user.email}">
+                                    Email address
+                                </label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input id="email"
+                                           type="email"
+                                           th:field="*{email}"
+                                           class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
+                                           th:classappend="${#fields.hasErrors('email')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+                                    <div th:if="${#fields.hasErrors('email')}"
+                                         class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p th:if="${#fields.hasErrors('email')}"
+                                   th:text="${#strings.listJoin(#fields.errors('email'), ', ')}"
+                                   class="mt-2 text-sm text-red-600" id="email-error">Email validation error message(s).</p>
+                            </div>
+
+                            <div class="sm:col-span-2 px-4">
+                                <label for="username" class="block text-sm font-medium leading-5 text-gray-700"
+                                       th:text="#{user.username}">
+                                    Username
+                                </label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <input id="username"
+                                           type="text"
+                                           th:field="*{username}"
+                                           class="shadow-sm block w-full sm:text-sm border-gray-300 rounded-md"
+                                           th:classappend="${#fields.hasErrors('username')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+                                    <div th:if="${#fields.hasErrors('username')}"
+                                         class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p th:if="${#fields.hasErrors('username')}"
+                                   th:text="${#strings.listJoin(#fields.errors('username'), ', ')}"
+                                   class="mt-2 text-sm text-red-600" id="username-error">Username validation error message(s).</p>
+                            </div>
+                            <!-- tag::birthday[] -->
+                            <div class="sm:col-span-2 px-4">
+                                <label for="default-datepicker" class="block text-sm font-medium leading-5 text-gray-700"
+                                       th:text="#{user.birthday}">
+                                    Birthday
+                                </label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                                        </svg>
+                                    </div>
+                                    <input datepicker datepicker-format="dd-mm-yyyy" datepicker-autohide id="default-datepicker"
+                                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                           placeholder="Select date"
+                                           th:field="*{dateOfBirth}"
+                                           th:type="text"
+                                           th:classappend="${#fields.hasErrors('dateOfBirth')?'border-red-300 focus:border-red-300 focus:ring-red-500':'focus:ring-green-500 focus:border-green-500'}">
+
+
+                                    <div th:if="${#fields.hasErrors('dateOfBirth')}"
+                                         class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <p th:if="${#fields.hasErrors('dateOfBirth')}"
+                                   th:text="${#strings.listJoin(#fields.errors('dateOfBirth'), ', ')}"
+                                   class="mt-2 text-sm text-red-600" id="birthday-error">Birthday validation error message(s).</p>
+                            </div>
+
+                        </div>
+
+                    <div class="mt-8 border-t border-gray-200 pt-5">
+                        <div class="flex justify-end">
+                          <span class="inline-flex rounded-md shadow-sm">
+                            <button type="button"
+                                    class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                    th:text="#{cancel}">
+                              Cancel
+                            </button>
+                          </span>
+                            <span class="ml-3 inline-flex rounded-md shadow-sm">
+                                <button type="submit"
+                                        class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                                        th:text="#{save}">
+                                  Save
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div th:if="${loggedInUserId != 2 and loggedInUserId != user.id}">
+            <div class="text-gray-500">
+                <p th:text="@{Sorry you dont have permission to see this page}" class="mb-6"></p>
+                <a th:href="@{/}" class="flex items-center text-sm text-cyan-500 hover:text-green-900">
+                    <svg viewBox="0 0 20 20" fill="currentColor"
+                         class="w-4 h-4 mr-2">
+                        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                              clip-rule="evenodd"></path>
+                    </svg>
+                    <span th:text="@{Back to home page}">Back to home page</span>
+                </a>
+            </div>
+        </div>
+    <script src="https://flowbite.com/docs/flowbite.min.js"></script>
+</div>
+
+</body>
+</html>

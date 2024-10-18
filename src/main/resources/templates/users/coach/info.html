@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/layout}"
+        th:with="activeMenuItem='dashboard'"
+>
+
+<head>
+    <title>User Info</title>
+</head>
+<body>
+
+<div layout:fragment="page-content"
+     th:with="loggedInUserId=${#authentication.principal.id}"
+     class="container px-6 py-4 bg-white">
+
+    <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 md:px-8">
+        <h1 class="text-2xl font-semibold text-gray-900">Coach info
+        </h1>
+    </div>
+    <label class="block mb-6">
+        <span class="text-gray-700"><b>Sport: </b></span>
+        <span th:text="${coach.sport.name}"></span>
+    </label>
+
+    <label class="block mb-6">
+        <span class="text-gray-700"><b>Name:</b></span>
+        <span th:text="${coach.firstName +' '+ coach.lastName }"></span>
+    </label>
+
+    <label class="block mb-6">
+        <span class="text-gray-700"><b>Date of birth: </b></span>
+        <span th:text="${#temporals.format(coach.dateOfBirth, 'dd-MM-yyyy')}"></span>
+    </label>
+    <label class="block mb-6">
+        <span class="text-gray-700"><b>Email: </b></span>
+        <span th:text="${coach.email}"></span>
+    </label>
+    <label class="block mb-6">
+        <span class="text-gray-700"><b>Number of training athletes: </b></span>
+        <span  th:text="${coach.athletes.size()}"></span>
+    </label>
+
+    <div
+            th:if="${loggedInUserId eq 2 or loggedInUserId eq coach.id}"
+            class="py-4">
+        <div class="flex flex-col">
+            <div class="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+                <div class="max-w-7xl mx-auto px-4  sm:px-6 md:px-8 flex flex-row justify-between">
+                    <h3 class="text-xl font-semibold text-gray-900">Athletes</h3>
+                    <div th:replace="~{fragments/titles :: buttonLink(#{coach.add.athlete}, ${coach.username}+'/add_athlete')}"></div>
+                </div>
+
+                <div class="my-6 align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
+                    <table class="w-full whitespace-no-wrap`">
+                        <thead>
+
+                        <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                            <th th:replace="~{fragments/table :: header(#{user.name})}"></th>
+                            <th th:replace="~{fragments/table :: header(title=#{user.birthday}, hideOnMobile=true)}"></th>
+                            <th th:replace="~{fragments/table :: header(title=#{user.email}, hideOnMobile=true)}"></th>
+                            <th th:replace="~{fragments/table :: header(title=@{Sport}, hideOnMobile=true)}"></th>
+                            <th th:replace="~{fragments/table :: header(@{Count of trainings})}"></th>
+                        </tr>
+
+                        </thead>
+                        <tbody class="bg-white divide-y gray:divide-gray-700 ">
+
+                        <tr class="text-gray-700 gray:text-gray-400 border-gray-300 "
+
+                            th:each="athlete : ${coach.athletes}">
+                            <td th:replace="~{fragments/table :: dataWithLink(@{${athlete.athleteData.firstName} +' '+  ${athlete.athleteData.lastName}},
+                            @{/athlete/{username}(username=${athlete.athleteData.username})})}"></td>
+                            <td th:replace="~{fragments/table :: data(contents=${#temporals.format(athlete.athleteData.dateOfBirth, 'dd-MM-yyyy')})}"></td>
+                            <td th:replace="~{fragments/table :: data(contents=${athlete.athleteData.email})}"></td>
+                            <td th:replace="~{fragments/table :: data(contents=${coach.sport.name})}"></td>
+                            <td th:replace="~{fragments/table :: data(contents=${athlete.trainings.size()})}"></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="my-2 max-w-7xl mx-auto px-4 py-5 sm:px-6 md:px-8 flex flex-row justify-between">
+                    <h3 class=" text-xl font-semibold text-gray-900">Trainings</h3>
+                    <div class="" th:replace="~{fragments/titles :: buttonLink(#{coach.add.training }, ${coach.username}+'/add_training')}"></div>
+                </div>
+                <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
+                    <table class="w-full whitespace-no-wrap`">
+                        <thead>
+                        <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                            <th th:replace="~{fragments/table :: header(#{training.name})}"></th>
+                            <th th:replace="~{fragments/table :: header(title=#{training.description}, hideOnMobile=true)}"></th>
+                            <th th:replace="~{fragments/table :: header(title=#{training.participants }, hideOnMobile=true)}"></th>
+                            <th th:replace="~{fragments/table :: header(title=#{training.location }, hideOnMobile=true)}"></th>
+                            <th th:replace="~{fragments/table :: header(title=#{training.date}, hideOnMobile=true)}"></th>
+                            <th>Actions</th>
+                        </tr>
+
+                        </thead>
+                        <tbody class="bg-white divide-y gray:divide-gray-700 ">
+                        <tr class="text-gray-700 gray:text-gray-400 border-gray-300 " th:each="training : ${coach.trainings}">
+                            <td th:replace="~{fragments/table :: dataWithLink(${training.name},@{/training/{id}(id=${training.id})})}"></td>
+                            <td th:replace="~{fragments/table :: data(contents=${training.description})}"></td>
+                            <td class="text-sm leading-5 text-cyan-500 text-center ">
+                                <div th:each="participant: ${training.participants}">
+                                    <a  th:href="@{add_training/{training_id}/{id}(training_id=${training.id}, id=${participant.athleteData.id})}" th:text="${participant.athleteData.firstName}"></a>
+                                </div>
+                            </td>
+                            <td th:replace="~{fragments/table :: data(contents=${training.location})}"></td>
+                            <td th:replace="~{fragments/table :: data(contents=${training.date})}"></td>
+                            <td class="text-xs text-center  tracking-wide  text-cyan-500 py-1">
+                                <div class="py-1"><a th:href="@{{username}/add_participant/{id}(username=${coach.username}, id=${training.id})}" >Add participant</a> </div>
+                                <div class="py-1"><a th:href="@{{username}/remove_participant/{id}(username=${coach.username}, id=${training.id})}" >Remove participant</a> </div>
+                                <div class="py-1"><a th:href="@{/training/edit-training/{id}(id=${training.id})}"> Edit training </a></div>
+                                <div class="py-1"><a th:href="@{/training/{id}(id=${training.id})}" >Training Details</a> </div>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="py-4" th:if="${coach.trainingRequests.size() > 0}">
+                    <h2 class="text-2xl font-semibold text-gray-900">Training requests
+                    </h2>
+                    <div class="flex flex-col">
+                        <div class="my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+                            <div class="my-2 align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
+
+                                <table class="w-full whitespace-no-wrap`">
+                                    <thead>
+                                    <tr class="py-2 text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                                        <th class="px-4 py-3 ">Sport</th>
+                                        <th class="px-4 py-3 ">Athlete</th>
+                                        <th class="px-4 py-3 ">Actions</th>
+                                    </tr>
+
+                                    </thead>
+                                    <tbody class="bg-white divide-y gray:divide-gray-700 ">
+                                    <tr th:each="request: ${coach.trainingRequests}" class="text-center text-gray-700 gray:text-gray-400 border-gray-300 ">
+                                        <td class="text-center" th:replace="~{fragments/table :: dataWithLink(${request.coach.sport.name},@{/sport/{name}(name=${request.coach.sport.name})})}"></td>
+                                        <td th:replace="~{fragments/table :: dataWithLink(${request.athleteData.firstName},@{/athlete/{username}(username=${request.athleteData.username})})}"></td>
+                                        <td class="px-4 py-3 text-center">
+                                          <a th:href="@{approve-training-request/{id}(id=${request.id})}" class="text-sm px-2 font-light font-medium  text-green-500">Approve</a>
+                                          <a th:href="@{reject-training-request/{id}(id=${request.id})}" class="text-sm px-2 font-light font-medium  text-red-500">Reject</a>
+
+                                        </td>
+
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

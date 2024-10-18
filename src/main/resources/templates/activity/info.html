@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/layout}"
+        th:with="activeMenuItem='activitiies'">
+
+<head>
+    <title>Activity Info</title>
+</head>
+<body>
+    <div layout:fragment="page-content" class="container px-6 py-4">
+
+        <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 md:px-8">
+            <h1 class="text-2xl font-semibold text-gray-900">Activity info
+            </h1>
+        </div>
+
+        <div class="py-4">
+            <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
+                <table class="w-full whitespace-no-wrap`">
+                    <thead>
+                    <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                        <th class="px-4 py-4">Name</th>
+                        <th class="px-4 py-4">Description</th>
+                        <th class="px-4 py-4">Num of coaches</th>
+                        <th class="px-4 py-4">Num of athletes</th>
+                    </tr>
+
+                    </thead>
+                    <tbody class="bg-white divide-y gray:divide-gray-700 ">
+                    <tr class="text-gray-700 gray:text-gray-400 border-gray-300 ">
+                        <td class="px-4 py-4" th:text="${activity.name}"></td>
+                        <td class="px-4 py-4" th:text="${activity.description}"></td>
+                        <td class="px-4 py-4 text-center"th:text="${activity.coaches.size()}"></td>
+                        <td class="px-4 py-4 text-center"  th:text="${activity.athletes.size()}"></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

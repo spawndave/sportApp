@@ -1,39 +1,41 @@
 package com.academy.sportApp.model.entity;
 
+import com.academy.sportApp.model.enums.TrainingDifficulty;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.Duration;
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "training_session")
 public class TrainingSession extends ModifierOptions{
+
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "training_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "athlete_id")
+    private Athlete data;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "training_id")
     private Training training;
 
-    @ManyToOne
-    @JoinColumn(name = "athlete_id", nullable = false)
-    private Athlete athlete;
-
-    @Column(nullable = false)
-    private Integer duration;
-
     @Column(name = "session_date")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate sessionDate;
 
     @Column(name = "difficulty_level", nullable = false)
-    private int difficultyLevel;
+    @Enumerated(EnumType.STRING)
+    private TrainingDifficulty difficulty = TrainingDifficulty.DEFAULT;
 
-    @Column(length = 1000)
     private String comments;
 
 }

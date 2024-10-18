@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/layout}"
+        th:with="activeMenuItem='dashboard'">
+
+<head>
+    <title>Train Info</title>
+</head>
+<body>
+<div layout:fragment="page-content" class="container px-6 py-4 bg-white"
+     th:with="loggedInUserId=${#authentication.principal.id}">
+<div th:if="${loggedInUserId eq 2 or loggedInUserId eq athlete.coach.id or loggedInUserId eq athlete.athleteData.id}">
+    <div class="max-w-7xl mx-auto px-4 py-5 sm:px-6 md:px-8">
+        <h1 class="text-2xl font-semibold text-gray-900">Training Details
+        </h1>
+    </div>
+
+    <div class="py-4">
+        <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
+            <table class="w-full whitespace-no-wrap`">
+                <thead>
+                <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                    <th th:replace="~{fragments/table :: header(#{training.name})}"></th>
+                    <th th:replace="~{fragments/table :: header(title=#{training.description}, hideOnMobile=true)}"></th>
+                    <th th:replace="~{fragments/table :: header(title=#{training.location }, hideOnMobile=true)}"></th>
+                    <th th:replace="~{fragments/table :: header(title=#{training.date}, hideOnMobile=true)}"></th>
+                    <th>Actions</th>
+                </tr>
+
+                </thead>
+                <tbody class="bg-white divide-y gray:divide-gray-700 ">
+                <tr class="text-gray-700 gray:text-gray-400 border-gray-300 ">
+                    <td th:replace="~{fragments/table :: dataWithLink(${athlete.training.name},@{/training/{id}(id=${athlete.training.id})})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${athlete.training.description})}"></td>
+
+                    <td th:replace="~{fragments/table :: data(contents=${athlete.training.location})}"></td>
+                    <td th:replace="~{fragments/table :: data(contents=${#temporals.format(athlete.training.date, 'dd-MM-yyyy')})}"></td>
+                    <td class="text-xs text-center  tracking-wide  text-cyan-500 py-1">
+                        <div class="py-1"><a href="#"> Edit training </a></div></td>
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+    <div class="w-full max-w-7xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+
+        <div class="flow-root ">
+            <form id="training-form"
+                  th:object="${athlete}"
+                  th:action="@{/training/update-training-session/{id}(id=${athlete.id})}"
+                  th:method="post" >
+                <div class="text-sm font-medium  dark:text-blue-500 py-2">
+                    <label for="status" class="block mb-2 text-xl font-medium text-gray-900 dark:text-white">Athlete:
+
+                        <a href="#" class="text-xl font-medium text-blue-600 hover:underline dark:text-blue-500"
+                           th:text="${athlete.athleteData.firstName}"
+                           th:href="@{/athlete/{username}/(username=${athlete.athleteData.username})}">
+                        </a>
+                        <input th:type="hidden" th:field="${athlete.trainingSession.id}" th:value="${athlete.trainingSession.id}">
+                    </label>
+                </div>
+
+                <div class="text-sm font-medium  dark:text-blue-500 py-2">
+                    <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >Status</label>
+                    <select th:field="${athlete.status}" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option th:selected="${athlete.status.value=='1'}" th:value="${athlete.status.NOT_COMPLETED}" th:text="@{Not started}"></option>
+                        <option th:selected="${athlete.status.value=='2'}" th:value="${athlete.status.COMPLETED}" th:text="@{Completed}"></option>
+                        <option th:selected="${athlete.status.value=='3'}" th:value="${athlete.status.DELAYED}" th:text="@{Delayed}"></option>
+                    </select>
+                </div>
+
+                <div class="text-sm font-medium  dark:text-blue-500 py-2">
+                    <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Training Session Date:
+                    </label>
+
+                    <div class="relative">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                            </svg>
+                        </div>
+                        <input datepicker datepicker-format="dd-mm-yyyy" datepicker-autohide id="default-datepicker"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                               placeholder="Select date"
+                               th:field="${athlete.trainingSession.sessionDate}"
+                               th:value="${athlete.trainingSession.sessionDate} ?: ''"
+                               th:type="text">
+                    </div>
+
+                    <script src="https://flowbite.com/docs/flowbite.min.js"></script>
+
+                </div>
+                <div class="text-sm font-medium  dark:text-blue-500 py-2">
+
+                    <label for="comments" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Comments</label>
+                    <textarea id="comments" class=" block w-full mt-1 border-gray-300 rounded shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
+                              placeholder="Training comments" rows="5"
+                              th:field="${athlete.trainingSession.comments}"
+                              th:text="${athlete.trainingSession.comments}">
+                </textarea>
+                </div>
+                <div class="text-sm font-medium  dark:text-blue-500 py-2">
+                    <label for="difficulty" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Difficulty Level</label>
+                    <select
+
+                            th:with="difficulty=${athlete.trainingSession.difficulty}"
+                            th:field="${athlete.trainingSession.difficulty}"
+                            id="difficulty"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option th:selected="${difficulty}" th:value="${athlete.trainingSession.difficulty.DEFAULT}" th:text="@{Select difficulty}"></option>
+                        <option th:selected="${difficulty}" th:value="${athlete.trainingSession.difficulty.EASY}" th:text="@{Easy}"></option>
+                        <option th:selected="${difficulty}" th:value="${athlete.trainingSession.difficulty.NORMAL}" th:text="@{Normal}"></option>
+                        <option th:selected="${difficulty}" th:value="${athlete.trainingSession.difficulty.HARD}" th:text="@{Hard}"></option>
+                    </select>
+                </div>
+
+                <div class="mb-6">
+                    <button
+                            class=" h-10 px-5 text-indigo-100 bg-indigo-700 rounded-lg transition-colors duration-150 focus:shadow-outline hover:bg-indigo-800 "
+                            id="form-submit" th:type="submit" >
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${loggedInUserId != 2 and loggedInUserId != athlete.coach.id and loggedInUserId != athlete.athleteData.id}">
+        <div class="text-gray-500">
+            <p th:text="@{Sorry you dont have permission to see this page}" class="mb-6"></p>
+            <a th:href="@{/}" class="flex items-center text-sm text-cyan-500 hover:text-green-900">
+                <svg viewBox="0 0 20 20" fill="currentColor"
+                     class="w-4 h-4 mr-2">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+                          clip-rule="evenodd"></path>
+                </svg>
+                <span th:text="@{Back to home page}">Back to home page</span>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+
+
+</div>
+</body>
+</html>

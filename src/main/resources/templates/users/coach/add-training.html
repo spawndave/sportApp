@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html
+        layout:decorate="~{layout/layout}"
+        th:with="activeMenuItem ='dashboard'"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Add training</title>
+</head>
+<body>
+<div class="container px-6 py-4 bg-white" layout:fragment="page-content">
+    <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 md:px-8">
+        <h1 class="text-2xl font-semibold text-gray-900"
+            th:text="#{coach.new_training}">New
+        </h1>
+    </div>
+    <div class="w-full md:w-3/4 md:max-w-full mx-auto">
+        <div class="p-6 border border-gray-300 sm:rounded-md">
+            <form id="training-form"
+                  th:object="${training}"
+                  th:action="@{add_training}"
+                  method="post">
+                <label class="block mb-6">
+                    <span class="text-gray-700">Name</span>
+                    <input class=" block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
+                            name="name" placeholder="" type="text" />
+                </label>
+
+                <label class="block mb-6">
+                    <span class="text-gray-700">Exercises</span>
+                    <textarea class=" block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
+                              name="description" placeholder="description" rows="3">
+                    </textarea>
+                </label>
+                <label class="block mb-6">
+                    <span class="text-gray-700">Location</span>
+                    <input class=" block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
+                            name="location"placeholder="Gomel,  Sovetskaya 35" type="text" />
+                </label>
+                <label class="block mb-6">
+                    <span class="text-gray-700">Date</span>
+                    <input class=" block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            name="date" placeholder="Select date" type="date" />
+                </label>
+                <div class="mb-6">
+                    <button class=" h-10 px-5 text-indigo-100 bg-indigo-700 rounded-lg transition-colors duration-150 focus:shadow-outline hover:bg-indigo-800 " id="form-submit" type="submit">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

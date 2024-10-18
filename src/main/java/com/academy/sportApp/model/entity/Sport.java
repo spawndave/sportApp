@@ -11,14 +11,21 @@ import java.util.List;
 @Setter
 public class Sport extends ModifierOptions{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-   /* @OneToMany
+
+
+    @OneToMany
     @JoinTable(
-            name = "coach",
+            name = "athlete_sport",
             joinColumns = @JoinColumn(name = "sport_id"),
-            inverseJoinColumns = @JoinColumn(name = "coach_id")
+            inverseJoinColumns = @JoinColumn(name = "athlete_id")
     )
-    private List<Coach> coaches;*/
+    private List<Athlete> athletes;
+
+    @OneToMany(mappedBy = "sport")
+    private List<Coach> coaches;
+
 }
