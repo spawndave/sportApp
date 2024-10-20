@@ -13,7 +13,7 @@ public interface UserService {
     //List<User> getUsers();
     List<UserDto> getUsers();
     UserDto getUserDtoById(Long id);
-    void saveUser(NewUserDto user);
+    User saveUser(NewUserDto user);
     List<Role> getRoles();
     User getUserByUsername(String username);
     void updateUserData(UserDto user, String username);

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,24 +42,20 @@ public class CoachController {
         return "users/coach/training-journal";
     }
 
-    @GetMapping("/{username}/approve-training-request/{id}")
+    @GetMapping("/approve-training-request/{id}")
     public String approveAthleteRequest(
             @AuthenticationPrincipal User loggedInUser,
-            @PathVariable("username") String username,
-            @PathVariable("id") Long id,
-            Model model){
+            @PathVariable("id") Long id){
         coachService.approveTrainingRequest(id);
-        return "users/coach/info";
+        return "redirect:/coach/"+ loggedInUser.getUsername();
     }
 
-    @GetMapping("/{username}/reject-training-request/{id}")
+    @GetMapping("/reject-training-request/{id}")
     public String rejectAthleteRequest(
             @AuthenticationPrincipal User loggedInUser,
-            @PathVariable("username") String username,
-            @PathVariable("id") Long id,
-            Model model){
+            @PathVariable("id") Long id){
         coachService.rejectTrainingRequest(id);
-        return "users/coach/info";
+        return "redirect:/coach/"+ loggedInUser.getUsername();
     }
 
     @GetMapping("/{username}/add_athlete")
@@ -95,9 +92,15 @@ public class CoachController {
     @PostMapping("/{username}/add_training")
     public String addTraining(
             @PathVariable("username") String username,
-            Model model,
-            @Valid @ModelAttribute("training") TrainingDto trainingDto){
+            @Valid @ModelAttribute("training") TrainingDto trainingDto,
+            BindingResult bindingResult,
+            Model model){
         Coach coach = coachService.getCoachByUsername(username);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("coach", coach);
+            model.addAttribute("training", trainingDto);
+            return "users/coach/add-training";
+        }
         coachService.addTraining(coach, trainingDto);
         model.addAttribute("coach", coach);
         return "redirect:/coach/" + coach.getUsername();
