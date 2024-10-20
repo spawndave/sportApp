@@ -8,10 +8,7 @@
     <title>Training Info</title>
 </head>
 <body>
-        <div layout:fragment="page-content"
-             th:with="loggedInUserId=${#authentication.principal.id}"
-             class="container px-6 py-4">
-            <div class="container px-6 py-4" layout:fragment="page-content"
+       <div class="container px-6 py-4" layout:fragment="page-content"
                  th:with="loggedInUserId=${#authentication.principal.id}">
 
                 <div th:if="${loggedInUserId eq 2 or loggedInUserId eq training.coach.id}">
@@ -116,7 +113,6 @@
                     </div>
                 </div>
                 <script src="https://flowbite.com/docs/flowbite.min.js"></script>
-            </div>
         </div>
 </body>
 </html>

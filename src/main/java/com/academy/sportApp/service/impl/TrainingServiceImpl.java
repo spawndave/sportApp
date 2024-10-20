@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,7 +45,7 @@ public class TrainingServiceImpl implements TrainingService {
             .data(athleteData)
             .difficulty(TrainingDifficulty.DEFAULT)
             .training(training).build();
-            trainingSession.setCreatedAt(LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
+            trainingSession.setCreatedAt(LocalDate.now());
         TrainingParticipant participant = TrainingParticipant.builder()
             .training(training)
             .athlete(athlete)

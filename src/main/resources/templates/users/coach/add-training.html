@@ -24,25 +24,79 @@
                 <label class="block mb-6">
                     <span class="text-gray-700">Name</span>
                     <input class=" block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
-                            name="name" placeholder="" type="text" />
+                            name="name" placeholder="" type="text"
+                           th:classappend="${#fields.hasErrors('name')?'border-red-300 focus:border-red-300 focus:ring-red-500':'' }"/>
                 </label>
+                    <div th:if="${#fields.hasErrors('name')}"
+                         class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                <p th:if="${#fields.hasErrors('name')}"
+                   th:text="${#strings.listJoin(#fields.errors('name'), ', ')}"
+                   class="mt-2 text-sm text-red-600" id="name-error">Name validation error.</p>
 
                 <label class="block mb-6">
                     <span class="text-gray-700">Exercises</span>
                     <textarea class=" block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
-                              name="description" placeholder="description" rows="3">
+                              name="description" placeholder="description" rows="3"
+                              th:classappend="${#fields.hasErrors('description')?'border-red-300 focus:border-red-300 focus:ring-red-500':''}">
                     </textarea>
                 </label>
+                <div th:if="${#fields.hasErrors('description')}"
+                     class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <p th:if="${#fields.hasErrors('description')}"
+                   th:text="${#strings.listJoin(#fields.errors('description'), ', ')}"
+                   class="mt-2 text-sm text-red-600" id="description-error">Name validation error.</p>
+
                 <label class="block mb-6">
                     <span class="text-gray-700">Location</span>
                     <input class=" block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 "
-                            name="location"placeholder="Gomel,  Sovetskaya 35" type="text" />
+                            name="location"placeholder="Gomel,  Sovetskaya 35" type="text"
+                           th:classappend="${#fields.hasErrors('location')?'border-red-300 focus:border-red-300 focus:ring-red-500':''}"/>
                 </label>
+                <div th:if="${#fields.hasErrors('location')}"
+                     class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <p th:if="${#fields.hasErrors('location')}"
+                   th:text="${#strings.listJoin(#fields.errors('location'), ', ')}"
+                   class="mt-2 text-sm text-red-600" id="location-error">Name validation error.</p>
+
+
                 <label class="block mb-6">
                     <span class="text-gray-700">Date</span>
                     <input class=" block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            name="date" placeholder="Select date" type="date" />
+                            name="date" placeholder="Select date" type="date"
+                           th:classappend="${#fields.hasErrors('date')?'border-red-300 focus:border-red-300 focus:ring-red-500':''}"
+                    />
                 </label>
+                <div th:if="${#fields.hasErrors('date')}"
+                     class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <p th:if="${#fields.hasErrors('date')}"
+                   th:text="${#strings.listJoin(#fields.errors('date'), ', ')}"
+                   class="mt-2 text-sm text-red-600" id="date-error">Name validation error.</p>
+
+
                 <div class="mb-6">
                     <button class=" h-10 px-5 text-indigo-100 bg-indigo-700 rounded-lg transition-colors duration-150 focus:shadow-outline hover:bg-indigo-800 " id="form-submit" type="submit">
                         Save

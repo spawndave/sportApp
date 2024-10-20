@@ -14,15 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-
-
-
 
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -52,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void saveUser(NewUserDto userDto) {
+    public User saveUser(NewUserDto userDto) {
         User user = newUserDtoMapper.apply(userDto);
         user = userRepository.save(user);
         if(user instanceof Athlete) {
@@ -66,6 +62,7 @@ public class UserServiceImpl implements UserService {
             coach.setSport(userDto.getSport());
             coachRepository.save(coach);
         }
+        return user;
     }
 
     @Override
@@ -91,7 +88,7 @@ public class UserServiceImpl implements UserService {
             user.setUsername(newUser.getUsername());
         }
         user.setUsername(newUser.getUsername());
-        user.setUpdatedAt( LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        user.setUpdatedAt( LocalDate.now() );
         userRepository.save(user);
     }
 

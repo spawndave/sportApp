@@ -68,8 +68,7 @@ public class CoachServiceImpl implements CoachService {
 
     @Override
     public void addAthleteForTrainings(Coach coach, Long athleteId) {
-        AthleteWithCoach athlete = new AthleteWithCoach();
-        athlete.builder()
+        AthleteWithCoach athlete= AthleteWithCoach.builder()
                 .athleteData(athleteService.getAthleteById(athleteId))
                 .coach(coach)
                 .sport(coach.getSport())

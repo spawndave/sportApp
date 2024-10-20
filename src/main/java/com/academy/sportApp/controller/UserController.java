@@ -53,14 +53,14 @@ public class UserController {
             @Valid @ModelAttribute("user") UserDto userDto,
             BindingResult bindingResult,
             Model model){
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userDto);
+            return "users/edit";
+        }
         try{
             userService.updateUserData(userDto, loggedInUser.getUsername());
         }catch(UserNotUniqDataException exception){
             bindingResult.rejectValue("username", "error", "This username is already exist.");
-        }
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("user", userDto);
-            return "users/edit";
         }
         return "redirect:/users";
     }

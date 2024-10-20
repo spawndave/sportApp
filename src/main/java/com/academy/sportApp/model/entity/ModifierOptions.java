@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -17,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 @MappedSuperclass
 public class ModifierOptions {
     @Column(name = "created_at")
-    private String createdAt = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+    private LocalDate createdAt = LocalDate.now();
     @Column(name = "updated_at")
-    private String updatedAt = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+    private LocalDate updatedAt = LocalDate.now();
 }
