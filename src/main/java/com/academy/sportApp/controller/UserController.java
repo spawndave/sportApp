@@ -1,7 +1,7 @@
 package com.academy.sportApp.controller;
 
 import com.academy.sportApp.dto.UserDto;
-import com.academy.sportApp.exceptions.UserNotUniqDataException;
+import com.academy.sportApp.exceptions.UserWithEmailNotUniqException;
 import com.academy.sportApp.model.entity.User;
 import com.academy.sportApp.service.UserService;
 import jakarta.validation.Valid;
@@ -59,7 +59,7 @@ public class UserController {
         }
         try{
             userService.updateUserData(userDto, loggedInUser.getUsername());
-        }catch(UserNotUniqDataException exception){
+        }catch(UserWithEmailNotUniqException exception){
             bindingResult.rejectValue("username", "error", "This username is already exist.");
         }
         return "redirect:/users";

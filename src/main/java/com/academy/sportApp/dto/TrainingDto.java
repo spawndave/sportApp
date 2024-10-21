@@ -1,5 +1,6 @@
 package com.academy.sportApp.dto;
 
+import com.academy.sportApp.validators.NotCorrectTrainingDate;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 
 @Data
 @RequiredArgsConstructor
+@NotCorrectTrainingDate
 public class TrainingDto {
     @NotBlank(message = "Type the name of training")
     private String name;

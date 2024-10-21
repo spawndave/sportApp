@@ -2,7 +2,7 @@ package com.academy.sportApp.dto;
 
 import com.academy.sportApp.model.entity.Role;
 import com.academy.sportApp.model.entity.Sport;
-import com.academy.sportApp.validators.NotExistingUser;
+import com.academy.sportApp.validators.NotUniqUsernameAndEmail;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -14,8 +14,10 @@ import java.time.LocalDate;
 
 @Data
 @RequiredArgsConstructor
-@NotExistingUser
+@NotUniqUsernameAndEmail
 public class NewUserDto {
+
+
     @NotBlank(message = "Username shouldn't be empty")
     @Pattern(regexp = "[0-9A-Za-z]{4,16}")
     private String username;

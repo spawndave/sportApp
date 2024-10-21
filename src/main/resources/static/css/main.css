@@ -1562,6 +1562,10 @@ input:checked + .toggle-bg {
   width: 5rem;
 }
 
+.w-3\/4 {
+  width: 75%;
+}
+
 .w-4 {
   width: 1rem;
 }
@@ -1588,10 +1592,6 @@ input:checked + .toggle-bg {
 
 .w-full {
   width: 100%;
-}
-
-.w-3\/4 {
-  width: 75%;
 }
 
 .min-w-0 {
@@ -2334,6 +2334,11 @@ input:checked + .toggle-bg {
   letter-spacing: 0.025em;
 }
 
+.text-blue-500 {
+  --tw-text-opacity: 1;
+  color: rgb(63 131 248 / var(--tw-text-opacity));
+}
+
 .text-blue-600 {
   --tw-text-opacity: 1;
   color: rgb(28 100 242 / var(--tw-text-opacity));
@@ -2432,11 +2437,6 @@ input:checked + .toggle-bg {
 .text-yellow-600 {
   --tw-text-opacity: 1;
   color: rgb(159 88 10 / var(--tw-text-opacity));
-}
-
-.text-blue-500 {
-  --tw-text-opacity: 1;
-  color: rgb(63 131 248 / var(--tw-text-opacity));
 }
 
 .opacity-0 {
