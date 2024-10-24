@@ -36,7 +36,7 @@ public class CoachServiceImpl implements CoachService {
 
     @Override
     public Coach getCoachByUsername(String username) {
-        return coachRepository.getCoachByUsername(username);
+        return coachRepository.getCoachByUsername(username).orElseThrow();
     }
 
     @Override

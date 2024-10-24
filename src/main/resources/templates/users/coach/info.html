@@ -42,9 +42,7 @@
         <span  th:text="${coach.athletes.size()}"></span>
     </label>
 
-    <div
-            th:if="${loggedInUserId eq 2 or loggedInUserId eq coach.id}"
-            class="py-4">
+    <div th:if="${loggedInUserId eq 2 or loggedInUserId eq coach.id}" class="py-4">
         <div class="flex flex-col">
             <div class="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div class="max-w-7xl mx-auto px-4  sm:px-6 md:px-8 flex flex-row justify-between">
@@ -56,7 +54,7 @@
                     <table class="w-full whitespace-no-wrap`">
                         <thead>
 
-                        <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                        <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-cyan-50 dark:text-gray-400 ">
                             <th th:replace="~{fragments/table :: header(#{user.name})}"></th>
                             <th th:replace="~{fragments/table :: header(title=#{user.birthday}, hideOnMobile=true)}"></th>
                             <th th:replace="~{fragments/table :: header(title=#{user.email}, hideOnMobile=true)}"></th>
@@ -85,12 +83,19 @@
 
                 <div class="my-2 max-w-7xl mx-auto px-4 py-5 sm:px-6 md:px-8 flex flex-row justify-between">
                     <h3 class=" text-xl font-semibold text-gray-900">Trainings</h3>
+                    <div class="flex flex-row justify-center">
+                        <label class="px-4 py-2"  for="sortBy">Sort by:</label>
+                        <select id="sortBy" onchange="sortBy(this)" class=" shadow-sm  sm:text-sm border-gray-300 rounded-md focus:ring-cyan-500 focus:border-cyan-500">
+                            <option  value="dateOfBirth">Date</option>
+                            <option  value="firstName">Status</option>
+                        </select>
+                    </div>
                     <div class="" th:replace="~{fragments/titles :: buttonLink(#{coach.add.training }, ${coach.username}+'/add_training')}"></div>
                 </div>
                 <div class="align-middle inline-block min-w-full shadow overflow-hidden rounded-md sm:rounded-lg border-b border-gray-200">
                     <table class="w-full whitespace-no-wrap`">
                         <thead>
-                        <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                        <tr class="text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-cyan-50 dark:text-gray-400 ">
                             <th th:replace="~{fragments/table :: header(#{training.name})}"></th>
                             <th th:replace="~{fragments/table :: header(title=#{training.description}, hideOnMobile=true)}"></th>
                             <th th:replace="~{fragments/table :: header(title=#{training.participants }, hideOnMobile=true)}"></th>

@@ -4,12 +4,16 @@ import com.academy.sportApp.dto.NewUserDto;
 import com.academy.sportApp.dto.UserDto;
 import com.academy.sportApp.dto.mappers.NewUserDtoMapper;
 import com.academy.sportApp.dto.mappers.UserDtoMapper;
-import com.academy.sportApp.exceptions.UserNotUniqDataException;
-import com.academy.sportApp.exceptions.UserWithUsernameNotFoundException;
+import com.academy.sportApp.exceptions.UserNotFoundException;
+import com.academy.sportApp.exceptions.UserWithEmailNotUniqException;
+import com.academy.sportApp.exceptions.UserWithUsernameNotUniqException;
 import com.academy.sportApp.model.entity.*;
 import com.academy.sportApp.model.repository.*;
 import com.academy.sportApp.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,18 +35,20 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<UserDto> getUsers() {
+    public Page<UserDto> getUsers(Pageable pageable) {
         Role admin = Role.builder().id(1L).name("ADMIN").build();
-        List<User> users = userRepository.findUsersByRoleNot(admin);
-        List<UserDto> usersDto = users
+        Page<User> results = userRepository.findUsersByRoleNot(admin, pageable);
+        List<UserDto> usersDto = results.getContent()
                 .stream()
                 .map(userDtoMapper)
                 .collect(Collectors.toList());
-        return usersDto;
+        return new PageImpl<>(usersDto, pageable, results.getTotalElements());
     }
 
     @Override
     public UserDto getUserDtoById(Long id) {
+        User user =userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException("User not found with ID: " + id));
         return userDtoMapper.apply(userRepository.getReferenceById(id));
     }
 
@@ -78,12 +84,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserData(UserDto newUser, String username) {
         User user = userRepository.getUserByUsername(username)
-                .orElseThrow(() -> new UserWithUsernameNotFoundException(username));
+                .orElseThrow(() -> new UserWithUsernameNotUniqException(username));
         user.setFirstName(newUser.getFirstName());
         user.setLastName(newUser.getLastName());
         user.setEmail(newUser.getEmail());
         if(!username.equals(newUser.getUsername()) &&  userRepository.getUserByUsername(newUser.getUsername()).isPresent()) {
-            throw new UserNotUniqDataException(username);
+            throw new UserWithEmailNotUniqException(username);
         }else{
             user.setUsername(newUser.getUsername());
         }

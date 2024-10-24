@@ -2,7 +2,7 @@ package com.academy.sportApp.dto;
 
 import com.academy.sportApp.model.entity.Role;
 import com.academy.sportApp.model.entity.Sport;
-import com.academy.sportApp.validators.NotExistingUser;
+import com.academy.sportApp.validators.NotUniqUsernameAndEmail;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -14,26 +14,28 @@ import java.time.LocalDate;
 
 @Data
 @RequiredArgsConstructor
-@NotExistingUser
+@NotUniqUsernameAndEmail
 public class NewUserDto {
+
+
     @NotBlank(message = "Username shouldn't be empty")
-    @Pattern(regexp = "[0-9A-Za-z]{4,16}")
+    @Pattern(regexp = "[0-9A-Za-z]{4,16}", message="first name contain only letters and numbers, and it must be between 4 and 16 characters long")
     private String username;
 
-    @NotBlank(message = "password contain only letters and numbers, and it must be between 4 and 12 characters long")
-    @Pattern(regexp = "[0-9A-Za-z]{4,12}")
+    @NotBlank(message = "Password shouldn't be empty")
+    @Pattern(regexp = "[0-9A-Za-z]{4,12}", message = "password contain only letters and numbers, and it must be between 4 and 12 characters long")
     private String password;
 
-    @NotBlank(message = "username contain only letters and numbers, and it must be between 4 and 16 characters long")
-    @Pattern(regexp = "[0-9A-Za-z]{4,16}")
+    @NotBlank(message = "firstName shouldn't be empty")
+    @Pattern(regexp = "[0-9A-Za-z]{2,16}" ,message = "First name contain only letters and numbers, and it must be between 2 and 16 characters long")
     private String firstName;
 
-    @NotBlank(message = "username contain only letters and numbers, and it must be between 4 and 16 characters long")
-    @Pattern(regexp = "[0-9A-Za-z]{4,16}")
+    @NotBlank(message = "lastName shouldn't be empty")
+    @Pattern(regexp = "[0-9A-Za-z]{2,16}", message = "lastName contain only letters and numbers, and it must be between 2 and 16 characters long")
     private String lastName;
 
-    @NotBlank(message = "email isn't correct")
-    @Pattern(regexp = "^((?!\\.)[\\w-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$")
+    @NotBlank(message = "email shouldn't be empty")
+    @Pattern(regexp = "^((?!\\.)[\\w-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$", message = "email isn't correct")
     private String email;
 
     @NotNull(message = "incorrect date of birth")

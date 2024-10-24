@@ -7,17 +7,17 @@ import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class NotExistingUserValidator implements ConstraintValidator<NotExistingUser, NewUserDto> {
+public class NotExistingUserValidator implements ConstraintValidator<NotUniqUsernameAndEmail, NewUserDto> {
     private final UserService userService;
 
-    public void initialize(NotExistingUser constraint) {
+    public void initialize(NotUniqUsernameAndEmail constraint) {
 
     }
     public boolean isValid(NewUserDto userDto,
                            ConstraintValidatorContext context) {
         if (!userDto.getEmail().isEmpty() && userService.userWithEmailExists(userDto.getEmail())) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("{UserAlreadyExisting}")
+            context.buildConstraintViolationWithTemplate("User with this email is already exist")
                     .addPropertyNode("email").addConstraintViolation();
             return false;
         }

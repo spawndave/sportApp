@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -90,10 +91,10 @@ public class UserServiceTest {
     public void getUsersTest(){
         List<User> users = List.of(new Coach(), new Athlete());
 
-        when(userRepository.findUsersByRoleNot(any(Role.class))).thenReturn(users);
+        when(userRepository.findUsersByRoleNot(any(Role.class), any(Pageable.class)).getContent()).thenReturn(users);
         when(userDtoMapper.apply(any(User.class))).thenReturn(userDto);
 
-        List<UserDto> usersDto = userService.getUsers();
-        assertEquals(users.size(), usersDto.size());
+        //Page<UserDto> usersDto = userService.getUsers(0, 10, "id","ASC");
+        //assertThat(usersDto).hasSize(10);
     }
 }

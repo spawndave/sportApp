@@ -55,7 +55,7 @@
 
                                 <table class="w-full whitespace-no-wrap`">
                                     <thead>
-                                    <tr class="py-2 text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-gray-50 dark:text-gray-400 ">
+                                    <tr class="py-2 text-xs text-center  tracking-wide  text-gray-500 uppercase border-b gray:border-gray-700 bg-cyan-50 dark:text-gray-400 ">
                                         <th class="px-4 py-3 ">Sport</th>
                                         <th class="px-4 py-3 ">Coach</th>
                                         <th class="px-4 py-3 ">Trainings num:</th>
@@ -69,7 +69,6 @@
                                         <td th:replace="~{fragments/table :: dataWithLink(${activity.trainings.size()},@{/athlete/{username}/training-journal/{id}
                                     (username=${athlete.username}, id=${activity.id})})}">
                                         </td>
-
                                     </tr>
 
                                     </tbody>
