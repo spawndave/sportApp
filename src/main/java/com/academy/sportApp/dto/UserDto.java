@@ -17,20 +17,20 @@ public class UserDto{
     private Long id;
 
     @NotBlank(message = "Username shouldn't be empty")
-    @Pattern(regexp = "[0-9A-Za-z]{4,16}")
+    @Pattern(regexp = "[0-9A-Za-z]{4,16}", message="first name contain only letters and numbers, and it must be between 4 and 16 characters long")
     private String username;
 
-    @NotBlank(message = "username contain only letters and numbers, and it must be between 4 and 16 characters long")
-    @Pattern(regexp = "[0-9A-Za-z]{4,16}")
+    @NotBlank(message = "email can't be blank")
+    @Pattern(regexp = "[0-9A-Za-z]{4,16}",message="first name contain only letters and numbers, and it must be between 4 and 16 characters long")
     private String firstName;
 
-    @NotBlank(message = "username contain only letters and numbers, and it must be between 4 and 16 characters long")
-    @Pattern(regexp = "[0-9A-Za-z]{4,16}")
+    @NotBlank(message = "email can't be blank")
+    @Pattern(regexp = "[0-9A-Za-z]{4,16}",message="username contain only letters and numbers, and it must be between 4 and 16 characters long")
     private String lastName;
 
 
-    @NotBlank(message = "email isn't correct")
-    @Pattern(regexp = "^((?!\\.)[\\w-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$")
+    @NotBlank(message = "email can't be blank")
+    @Pattern(regexp = "^((?!\\.)[\\w-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$",message="email isn't correct")
     private String email;
 
     @NotNull(message = "incorrect date of birth")

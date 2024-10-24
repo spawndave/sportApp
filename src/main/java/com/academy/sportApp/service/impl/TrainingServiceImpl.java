@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class TrainingServiceImpl implements TrainingService {
+public class    TrainingServiceImpl implements TrainingService {
 
     private final TrainingRepository trainingRepository;
     private final TrainingParticipantRepository trainingParticipantRepository;

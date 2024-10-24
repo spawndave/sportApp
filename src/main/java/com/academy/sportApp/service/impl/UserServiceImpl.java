@@ -11,6 +11,9 @@ import com.academy.sportApp.model.entity.*;
 import com.academy.sportApp.model.repository.*;
 import com.academy.sportApp.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,14 +35,14 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<UserDto> getUsers() {
+    public Page<UserDto> getUsers(Pageable pageable) {
         Role admin = Role.builder().id(1L).name("ADMIN").build();
-        List<User> users = userRepository.findUsersByRoleNot(admin);
-        List<UserDto> usersDto = users
+        Page<User> results = userRepository.findUsersByRoleNot(admin, pageable);
+        List<UserDto> usersDto = results.getContent()
                 .stream()
                 .map(userDtoMapper)
                 .collect(Collectors.toList());
-        return usersDto;
+        return new PageImpl<>(usersDto, pageable, results.getTotalElements());
     }
 
     @Override

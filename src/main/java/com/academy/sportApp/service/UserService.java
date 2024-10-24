@@ -4,6 +4,8 @@ import com.academy.sportApp.dto.NewUserDto;
 import com.academy.sportApp.dto.UserDto;
 import com.academy.sportApp.model.entity.Role;
 import com.academy.sportApp.model.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
 @Service
 public interface UserService {
     //List<User> getUsers();
-    List<UserDto> getUsers();
+    Page<UserDto> getUsers(Pageable page);
     UserDto getUserDtoById(Long id);
     User saveUser(NewUserDto user);
     List<Role> getRoles();

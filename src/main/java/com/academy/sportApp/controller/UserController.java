@@ -6,13 +6,15 @@ import com.academy.sportApp.model.entity.User;
 import com.academy.sportApp.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -22,9 +24,14 @@ public class UserController {
 
 
     @GetMapping
-    public String index(Model model){
-        List<UserDto> users = userService.getUsers();
+    public String index(
+        @SortDefault.SortDefaults({
+                    @SortDefault("firstName")}) Pageable pageable,
+        @RequestParam(defaultValue = "sort") String sort,
+        Model model) {
+        Page<UserDto> users = userService.getUsers(pageable);
         model.addAttribute("users", users);
+        model.addAttribute("sortBy", sort);
         return "users/list";
     }
 
